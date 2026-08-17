@@ -132,365 +132,527 @@
     <div x-data="fileUpload()">
         <div class="max-w-xl -mt-25 lg:-mt-35 w-full mx-auto px-4">
             <div class="relative flex flex-col items-center justify-center p-8 transition-colors duration-300 ease-in-out border-2 border-dashed rounded-xl"
-            :class="{
+                :class="{
                 'border-gray-500': !isDragging && !file,
                 'border-blue-500 bg-blue-900/20': isDragging,
                 'border-green-500': file && isPdf,
                 'border-red-500': file && !isPdf
             }" @dragover.prevent="isDragging = true" @dragleave.prevent="isDragging = false"
-            @drop.prevent="handleDrop($event)">
-            <!-- File Info / Upload Icon -->
-            <div class="text-center">
-                <!-- PDF Icon -->
-                <template x-if="file && isPdf">
-                    <svg class="mx-auto h-16 w-16 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M9 12.75l3 3m0 0l3-3m-3 3v-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </template>
-                <!-- Invalid File Icon -->
-                <template x-if="file && !isPdf">
-                    <svg class="mx-auto h-16 w-16 text-red-400" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
-                    </svg>
-                </template>
-                <!-- Upload Icon -->
-                <template x-if="!file">
-                    <svg class="mx-auto h-16 w-16 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M12 16.5V9.75m0 0l-3.75 3.75M12 9.75l3.75 3.75M17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" />
-                    </svg>
-                </template>
-            </div>
-
-            <!-- Main Text -->
-            <p class="mt-4 lg:text-xl text-sm font-medium text-gray-200" x-show="!file">
-                Drag & drop your resume here
-            </p>
-            <p class="mt-2 text-sm text-gray-400" x-show="!file">
-                or <label for="fileInput" class="text-blue-400 hover:text-blue-500 font-semibold cursor-pointer">choose
-                    file</label> to
-                upload from your device
-            </p>
-
-            <!-- File Name & Status -->
-            <div class="mt-4 text-center" x-show="file" x-cloak>
-                <p class="font-medium text-gray-200" x-text="file?.name"></p>
-                <template x-if="isPdf">
-                    <p class="mt-1 text-sm text-green-400">PDF uploaded successfully!</p>
-                </template>
-                <template x-if="!isPdf">
-                    <p class="mt-1 text-sm text-red-400">Error: Only PDF files are accepted.</p>
-                </template>
-            </div>
-
-            <!-- File Input -->
-            <input type="file" id="fileInput" class="hidden" @change="handleFileSelect($event)" accept=".pdf">
-
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mt-6">
-                <!-- Reset Button -->
-                <button x-show="file && !isLoading" x-cloak @click="reset"
-                    class="px-4 py-2 text-sm font-medium text-white bg-red-600/80 hover:bg-red-600 rounded-lg transition-colors">
-                    Choose another file
-                </button>
-
-                <!-- Scan Button -->
-                <button x-show="file && isPdf && !isLoading" x-cloak @click="uploadFile()"
-                    class="px-6 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-lg hover:shadow-blue-500/20 transition-all duration-300">
-                    Scan Resume
-                </button>
-            </div>
-
-            <!-- Loading Spinner -->
-            <div x-show="isLoading" x-cloak class="mt-6 flex flex-col items-center justify-center space-y-3">
-                <svg class="animate-spin h-8 w-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                <span class="text-sm font-medium text-gray-400">Extracting details from your resume...</span>
-            </div>
-
-            <!-- Error Message Banner -->
-            <div x-show="errorMsg" x-cloak class="mt-6 p-4 rounded-lg bg-red-900/30 border border-red-500/50 text-red-200 text-sm text-center max-w-md mx-auto">
-                <p class="font-semibold" x-text="errorMsg"></p>
-            </div>
-        </div>
-    </div>
-
-    <!-- =======================================================RESULTS SECTION================================================== -->
-    <div id="results-section" x-show="extractedData" x-cloak x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-y-12" x-transition:enter-end="opacity-100 translate-y-0" class="max-w-6xl w-full mx-auto px-4 mt-16 mb-24">
-        <div class="bg-gray-900 border border-gray-800 rounded-3xl p-6 sm:p-8 shadow-2xl">
-            
-            <!-- Section Header -->
-            <div class="border-b border-gray-800 pb-6 mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div class="flex items-center space-x-4">
-                    <div class="h-12 w-12 rounded-2xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/20 flex-shrink-0">
-                        <i class="fa-solid fa-wand-magic-sparkles text-white text-lg"></i>
-                    </div>
-                    <div>
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-blue-500">AI Extraction Complete</span>
-                        <h2 class="text-2xl font-extrabold text-white mt-0.5 tracking-tight" x-text="extractedData.name?.[0] || 'Extracted Candidate'"></h2>
-                    </div>
+                @drop.prevent="handleDrop($event)">
+                <!-- File Info / Upload Icon -->
+                <div class="text-center">
+                    <!-- PDF Icon -->
+                    <template x-if="file && isPdf">
+                        <svg class="mx-auto h-16 w-16 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9 12.75l3 3m0 0l3-3m-3 3v-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </template>
+                    <!-- Invalid File Icon -->
+                    <template x-if="file && !isPdf">
+                        <svg class="mx-auto h-16 w-16 text-red-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                        </svg>
+                    </template>
+                    <!-- Upload Icon -->
+                    <template x-if="!file">
+                        <svg class="mx-auto h-16 w-16 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 16.5V9.75m0 0l-3.75 3.75M12 9.75l3.75 3.75M17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" />
+                        </svg>
+                    </template>
                 </div>
-                <div class="flex items-center space-x-3 w-full md:w-auto justify-between md:justify-end">
-                    <span class="bg-blue-900/50 text-blue-300 border border-blue-800 text-xs px-3.5 py-1.5 rounded-full font-semibold" x-text="extractedData.profile_type || 'Software Developer'"></span>
-                    <button @click="reset" class="px-4 py-2 text-xs font-semibold text-gray-400 hover:text-white border border-gray-800 hover:border-gray-700 hover:bg-gray-800 rounded-xl transition-all duration-300">
-                        <i class="fa-solid fa-rotate-left mr-1.5"></i> Clear Scan
+
+                <!-- Main Text -->
+                <p class="mt-4 lg:text-xl text-sm font-medium text-gray-200" x-show="!file">
+                    Drag & drop your resume here
+                </p>
+                <p class="mt-2 text-sm text-gray-400" x-show="!file">
+                    or <label for="fileInput"
+                        class="text-blue-400 hover:text-blue-500 font-semibold cursor-pointer">choose
+                        file</label> to
+                    upload from your device
+                </p>
+
+                <!-- File Name & Status -->
+                <div class="mt-4 text-center" x-show="file" x-cloak>
+                    <p class="font-medium text-gray-200" x-text="file?.name"></p>
+                    <template x-if="isPdf">
+                        <p class="mt-1 text-sm text-green-400">PDF uploaded successfully!</p>
+                    </template>
+                    <template x-if="!isPdf">
+                        <p class="mt-1 text-sm text-red-400">Error: Only PDF files are accepted.</p>
+                    </template>
+                </div>
+
+                <!-- File Input -->
+                <input type="file" id="fileInput" class="hidden" @change="handleFileSelect($event)" accept=".pdf">
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mt-6">
+                    <!-- Reset Button -->
+                    <button x-show="file && !isLoading" x-cloak @click="reset"
+                        class="px-4 py-2 text-sm font-medium text-white bg-red-600/80 hover:bg-red-600 rounded-lg transition-colors cursor-pointer">
+                        Choose another file
+                    </button>
+
+                    <!-- Scan Button -->
+                    <button x-show="file && isPdf && !isLoading" x-cloak @click="uploadFile()"
+                        class="px-6 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-lg hover:shadow-blue-500/20 transition-all duration-300 cursor-pointer">
+                        Scan Resume
                     </button>
                 </div>
+
+                <!-- Loading Spinner -->
+                <div x-show="isLoading" x-cloak class="mt-6 flex flex-col items-center justify-center space-y-3">
+                    <svg class="animate-spin h-8 w-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                        </circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                    <span class="text-sm font-medium text-gray-400">Extracting details from your resume...</span>
+                </div>
+
+                <!-- Error Message Banner -->
+                <div x-show="errorMsg" x-cloak
+                    class="mt-6 p-4 rounded-lg bg-red-900/30 border border-red-500/50 text-red-200 text-sm text-center max-w-md mx-auto">
+                    <p class="font-semibold" x-text="errorMsg"></p>
+                </div>
             </div>
-            <!-- Three-column Grid (side-by-side on tablet/desktop: md breakpoints) -->
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
-                
-                <!-- Left Column (4/12 width): Contact and Education details -->
-                <div class="md:col-span-4 space-y-6">
-                    
-                    <!-- Contact Information Details Card -->
-                    <div class="bg-gray-950/40 border border-gray-800 p-5 rounded-2xl">
-                        <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-address-book text-blue-400"></i> Contact Details
-                        </h3>
-                        <div class="space-y-2">
-                            <!-- Email -->
-                            <template x-if="extractedData.email && extractedData.email.length > 0">
-                                <div class="group flex items-center space-x-3 p-2 rounded-xl hover:bg-gray-900 transition-colors duration-200">
-                                    <div class="h-8 w-8 rounded-lg bg-gray-900 text-blue-400 flex items-center justify-center border border-gray-800 flex-shrink-0">
-                                        <i class="fa-solid fa-envelope text-xs"></i>
-                                    </div>
-                                    <span class="text-xs text-gray-300 truncate select-all" x-text="extractedData.email[0]"></span>
-                                </div>
-                            </template>
-                            <!-- Phone -->
-                            <template x-if="extractedData.phone && extractedData.phone.length > 0">
-                                <div class="group flex items-center space-x-3 p-2 rounded-xl hover:bg-gray-900 transition-colors duration-200">
-                                    <div class="h-8 w-8 rounded-lg bg-gray-900 text-green-400 flex items-center justify-center border border-gray-800 flex-shrink-0">
-                                        <i class="fa-solid fa-phone text-xs"></i>
-                                    </div>
-                                    <span class="text-xs text-gray-300 select-all" x-text="extractedData.phone[0]"></span>
-                                </div>
-                            </template>
-                            <!-- LinkedIn -->
-                            <template x-if="extractedData.linkedin && extractedData.linkedin.length > 0">
-                                <a :href="'https://' + extractedData.linkedin[0]" target="_blank" class="group flex items-center space-x-3 p-2 rounded-xl hover:bg-gray-900 transition-colors duration-200">
-                                    <div class="h-8 w-8 rounded-lg bg-gray-900 text-blue-400 flex items-center justify-center border border-gray-800 flex-shrink-0">
-                                        <i class="fa-brands fa-linkedin-in text-xs"></i>
-                                    </div>
-                                    <span class="text-xs text-blue-400 hover:underline truncate" x-text="extractedData.linkedin[0]"></span>
-                                </a>
-                            </template>
-                            <!-- GitHub -->
-                            <template x-if="extractedData.github && extractedData.github.length > 0">
-                                <a :href="'https://' + extractedData.github[0]" target="_blank" class="group flex items-center space-x-3 p-2 rounded-xl hover:bg-gray-900 transition-colors duration-200">
-                                    <div class="h-8 w-8 rounded-lg bg-gray-900 text-gray-400 flex items-center justify-center border border-gray-800 flex-shrink-0">
-                                        <i class="fa-brands fa-github text-xs"></i>
-                                    </div>
-                                    <span class="text-xs text-blue-400 hover:underline truncate" x-text="extractedData.github[0]"></span>
-                                </a>
-                            </template>
+        </div>
+
+        <!-- =======================================================RESULTS SECTION================================================== -->
+        <div id="results-section" x-show="extractedData" x-cloak x-transition:enter="transition ease-out duration-500"
+            x-transition:enter-start="opacity-0 translate-y-12" x-transition:enter-end="opacity-100 translate-y-0"
+            class="max-w-6xl w-full mx-auto px-4 mt-16 mb-24">
+            <div class="bg-gray-900 border border-gray-800 rounded-3xl p-6 sm:p-8 shadow-2xl">
+
+                <!-- Section Header -->
+                <div
+                    class="border-b border-gray-800 pb-6 mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div class="flex items-center space-x-4">
+                        <div
+                            class="h-12 w-12 rounded-2xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/20 flex-shrink-0">
+                            <i class="fa-solid fa-wand-magic-sparkles text-white text-lg"></i>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-blue-500">AI Extraction
+                                Complete</span>
+                            <h2 class="text-2xl font-extrabold text-white mt-0.5 tracking-tight"
+                                x-text="extractedData.name?.[0] || 'Extracted Candidate'"></h2>
                         </div>
                     </div>
+                    <div class="flex items-center space-x-3 w-full md:w-auto justify-between md:justify-end">
+                        <!-- User Profile Avatar/Badge (OAuth Status) -->
+                        <template x-if="isAuthenticated && user">
+                            <div
+                                class="flex items-center space-x-2.5 bg-gray-950/60 border border-gray-850 rounded-xl px-3 py-1.5 mr-2">
+                                <img :src="user.avatar"
+                                    class="h-5 w-5 rounded-full border border-blue-500/80 flex-shrink-0" alt="Avatar">
+                                <span class="text-xs font-bold text-gray-200" x-text="user.name"></span>
+                                <button @click="logout()" title="Logout"
+                                    class="text-gray-400 hover:text-red-400 text-xs transition-colors pl-1 cursor-pointer">
+                                    <i class="fa-solid fa-right-from-bracket"></i>
+                                </button>
+                            </div>
+                        </template>
 
-                    <!-- Education Summary Block -->
-                    <div class="bg-gray-950/40 border border-gray-800 p-5 rounded-2xl">
-                        <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-graduation-cap text-indigo-400"></i> Education Info
-                        </h3>
-                        <div class="space-y-4">
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="bg-gray-900/60 p-3 rounded-xl border border-gray-800">
-                                    <span class="text-[9px] text-gray-500 font-bold uppercase block tracking-wider">CGPA</span>
-                                    <span class="text-sm font-extrabold text-gray-200 mt-1 block" x-text="extractedData.cgpa || 'N/A'"></span>
-                                </div>
-                                <div class="bg-gray-900/60 p-3 rounded-xl border border-gray-800">
-                                    <span class="text-[9px] text-gray-500 font-bold uppercase block tracking-wider">Grad Year</span>
-                                    <span class="text-sm font-extrabold text-gray-200 mt-1 block" x-text="extractedData.grad_year || 'N/A'"></span>
-                                </div>
-                            </div>
-                            <div class="space-y-2">
-                                <div x-show="extractedData.degree?.[0]">
-                                    <span class="text-[9px] text-gray-500 font-bold uppercase tracking-wider block">Degree Obtained</span>
-                                    <span class="text-xs font-semibold text-gray-300 mt-0.5 block" x-text="extractedData.degree?.[0]"></span>
-                                </div>
-                                <div x-show="extractedData.college?.[0]" class="pt-2.5 border-t border-gray-800">
-                                    <span class="text-[9px] text-gray-500 font-bold uppercase tracking-wider block">College/University</span>
-                                    <span class="text-xs font-semibold text-gray-300 mt-0.5 block" x-text="extractedData.college[0]"></span>
-                                </div>
-                            </div>
-                        </div>
+                        <span
+                            class="bg-blue-900/50 text-blue-300 border border-blue-800 text-xs px-3.5 py-1.5 rounded-full font-semibold"
+                            x-text="extractedData.profile_type || 'Software Developer'"></span>
+                        <button @click="reset"
+                            class="px-4 py-2 text-xs font-semibold text-gray-400 hover:text-white border border-gray-800 hover:border-gray-700 hover:bg-gray-800 rounded-xl transition-all duration-300">
+                            <i class="fa-solid fa-rotate-left mr-1.5"></i> Clear Scan
+                        </button>
                     </div>
+                </div>
 
-                    <!-- Work History Block -->
-                    <template x-if="extractedData.companies && extractedData.companies.length > 0">
-                        <div class="bg-gray-950/40 border border-gray-800 p-5 rounded-2xl">
-                            <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3 flex items-center gap-2">
-                                <i class="fa-solid fa-briefcase text-teal-400"></i> Work History
-                            </h3>
-                            <div class="space-y-2">
-                                <span class="text-[9px] text-gray-500 font-bold uppercase tracking-wider block">Identified Companies</span>
-                                <div class="flex flex-wrap gap-1.5 mt-1">
-                                    <template x-for="company in extractedData.companies">
-                                        <span class="bg-teal-900/40 text-teal-300 border border-teal-800 text-[10px] px-2.5 py-1 rounded-md font-semibold" x-text="company"></span>
+                <!-- SECTION 1: Resume Details (Top) -->
+                <div class="mb-12">
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-file-invoice text-blue-400"></i> Resume Analysis Details
+                    </h3>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                        <!-- Left Side: Contact, Education, Work History -->
+                        <div class="space-y-6">
+                            <!-- Contact Information Details Card -->
+                            <div class="bg-gray-950/40 border border-gray-800 p-5 rounded-2xl">
+                                <h3
+                                    class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4 flex items-center gap-2">
+                                    <i class="fa-solid fa-address-book text-blue-400"></i> Contact Details
+                                </h3>
+                                <div class="space-y-2">
+                                    <!-- Email -->
+                                    <template x-if="extractedData.email && extractedData.email.length > 0">
+                                        <div
+                                            class="group flex items-center space-x-3 p-2 rounded-xl hover:bg-gray-900 transition-colors duration-200">
+                                            <div
+                                                class="h-8 w-8 rounded-lg bg-gray-900 text-blue-400 flex items-center justify-center border border-gray-800 flex-shrink-0">
+                                                <i class="fa-solid fa-envelope text-xs"></i>
+                                            </div>
+                                            <span class="text-xs text-gray-300 truncate select-all"
+                                                x-text="extractedData.email[0]"></span>
+                                        </div>
+                                    </template>
+                                    <!-- Phone -->
+                                    <template x-if="extractedData.phone && extractedData.phone.length > 0">
+                                        <div
+                                            class="group flex items-center space-x-3 p-2 rounded-xl hover:bg-gray-900 transition-colors duration-200">
+                                            <div
+                                                class="h-8 w-8 rounded-lg bg-gray-900 text-green-400 flex items-center justify-center border border-gray-800 flex-shrink-0">
+                                                <i class="fa-solid fa-phone text-xs"></i>
+                                            </div>
+                                            <span class="text-xs text-gray-300 select-all"
+                                                x-text="extractedData.phone[0]"></span>
+                                        </div>
+                                    </template>
+                                    <!-- LinkedIn -->
+                                    <template x-if="extractedData.linkedin && extractedData.linkedin.length > 0">
+                                        <a :href="'https://' + extractedData.linkedin[0]" target="_blank"
+                                            class="group flex items-center space-x-3 p-2 rounded-xl hover:bg-gray-900 transition-colors duration-200">
+                                            <div
+                                                class="h-8 w-8 rounded-lg bg-gray-900 text-blue-400 flex items-center justify-center border border-gray-800 flex-shrink-0">
+                                                <i class="fa-brands fa-linkedin-in text-xs"></i>
+                                            </div>
+                                            <span class="text-xs text-blue-400 hover:underline truncate"
+                                                x-text="extractedData.linkedin[0]"></span>
+                                        </a>
+                                    </template>
+                                    <!-- GitHub -->
+                                    <template x-if="extractedData.github && extractedData.github.length > 0">
+                                        <a :href="'https://' + extractedData.github[0]" target="_blank"
+                                            class="group flex items-center space-x-3 p-2 rounded-xl hover:bg-gray-900 transition-colors duration-200">
+                                            <div
+                                                class="h-8 w-8 rounded-lg bg-gray-900 text-gray-400 flex items-center justify-center border border-gray-800 flex-shrink-0">
+                                                <i class="fa-brands fa-github text-xs"></i>
+                                            </div>
+                                            <span class="text-xs text-blue-400 hover:underline truncate"
+                                                x-text="extractedData.github[0]"></span>
+                                        </a>
                                     </template>
                                 </div>
-                                <div class="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-gray-800">
-                                    <div>
-                                        <span class="text-[9px] text-gray-500 font-bold uppercase tracking-wider block">Experience Status</span>
-                                        <span class="text-xs font-semibold text-gray-300 mt-0.5 block truncate" x-text="extractedData.experience || 'Not specified'"></span>
+                            </div>
+
+                            <!-- Education Summary Block -->
+                            <div class="bg-gray-950/40 border border-gray-800 p-5 rounded-2xl">
+                                <h3
+                                    class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4 flex items-center gap-2">
+                                    <i class="fa-solid fa-graduation-cap text-indigo-400"></i> Education Info
+                                </h3>
+                                <div class="space-y-4">
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="bg-gray-900/60 p-3 rounded-xl border border-gray-800">
+                                            <span
+                                                class="text-[9px] text-gray-500 font-bold uppercase block tracking-wider">CGPA</span>
+                                            <span class="text-sm font-extrabold text-gray-200 mt-1 block"
+                                                x-text="extractedData.cgpa || 'N/A'"></span>
+                                        </div>
+                                        <div class="bg-gray-900/60 p-3 rounded-xl border border-gray-800">
+                                            <span
+                                                class="text-[9px] text-gray-500 font-bold uppercase block tracking-wider">Grad
+                                                Year</span>
+                                            <span class="text-sm font-extrabold text-gray-200 mt-1 block"
+                                                x-text="extractedData.grad_year || 'N/A'"></span>
+                                        </div>
                                     </div>
-                                    <div x-show="extractedData.designation?.[0]">
-                                        <span class="text-[9px] text-gray-500 font-bold uppercase tracking-wider block">Last Title</span>
-                                        <span class="text-xs font-semibold text-slate-300 mt-0.5 block truncate" x-text="extractedData.designation[0]"></span>
+                                    <div class="space-y-2">
+                                        <div x-show="extractedData.degree?.[0]">
+                                            <span
+                                                class="text-[9px] text-gray-500 font-bold uppercase tracking-wider block">Degree
+                                                Obtained</span>
+                                            <span class="text-xs font-semibold text-gray-300 mt-0.5 block"
+                                                x-text="extractedData.degree?.[0]"></span>
+                                        </div>
+                                        <div x-show="extractedData.college?.[0]"
+                                            class="pt-2.5 border-t border-gray-800">
+                                            <span
+                                                class="text-[9px] text-gray-500 font-bold uppercase tracking-wider block">College/University</span>
+                                            <span class="text-xs font-semibold text-gray-300 mt-0.5 block"
+                                                x-text="extractedData.college[0]"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Work History Block -->
+                            <template x-if="extractedData.companies && extractedData.companies.length > 0">
+                                <div class="bg-gray-950/40 border border-gray-800 p-5 rounded-2xl">
+                                    <h3
+                                        class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3 flex items-center gap-2">
+                                        <i class="fa-solid fa-briefcase text-teal-400"></i> Work History
+                                    </h3>
+                                    <div class="space-y-2">
+                                        <span
+                                            class="text-[9px] text-gray-500 font-bold uppercase tracking-wider block">Identified
+                                            Companies</span>
+                                        <div class="flex flex-wrap gap-1.5 mt-1">
+                                            <template x-for="company in extractedData.companies">
+                                                <span
+                                                    class="bg-teal-900/40 text-teal-300 border border-teal-800 text-[10px] px-2.5 py-1 rounded-md font-semibold"
+                                                    x-text="company"></span>
+                                            </template>
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-gray-800">
+                                            <div>
+                                                <span
+                                                    class="text-[9px] text-gray-500 font-bold uppercase tracking-wider block">Experience
+                                                    Status</span>
+                                                <span class="text-xs font-semibold text-gray-300 mt-0.5 block truncate"
+                                                    x-text="extractedData.experience || 'Not specified'"></span>
+                                            </div>
+                                            <div x-show="extractedData.designation?.[0]">
+                                                <span
+                                                    class="text-[9px] text-gray-500 font-bold uppercase tracking-wider block">Last
+                                                    Title</span>
+                                                <span class="text-xs font-semibold text-slate-300 mt-0.5 block truncate"
+                                                    x-text="extractedData.designation[0]"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
                         </div>
-                    </template>
+
+                        <!-- Right Side: Skills, Projects, Certifications -->
+                        <div class="space-y-6">
+                            <!-- Skills Showroom -->
+                            <div class="bg-gray-950/40 border border-gray-800 p-5 rounded-2xl">
+                                <h3
+                                    class="text-xs font-bold uppercase tracking-widest text-gray-400 flex items-center gap-2 mb-4">
+                                    <span class="h-1.5 w-1.5 rounded-full bg-blue-500 shadow-sm shadow-blue-500"></span>
+                                    Core Technical Skills
+                                </h3>
+                                <div class="flex flex-wrap gap-2">
+                                    <template x-if="!extractedData.skills || extractedData.skills.length === 0">
+                                        <span class="text-xs text-slate-500 italic">No skills extracted.</span>
+                                    </template>
+                                    <template x-for="skill in extractedData.skills">
+                                        <span
+                                            class="bg-gray-900 hover:bg-gray-850 text-gray-300 hover:text-white text-xs px-3.5 py-2 rounded-xl border border-gray-800 hover:border-gray-700 font-medium transition-all duration-300 shadow-sm"
+                                            x-text="skill"></span>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <!-- Projects Showroom -->
+                            <template x-if="extractedData.projects && extractedData.projects.length > 0">
+                                <div>
+                                    <h3
+                                        class="text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2 mb-4">
+                                        <span
+                                            class="h-1.5 w-1.5 rounded-full bg-indigo-500 shadow-sm shadow-indigo-500"></span>
+                                        Projects Showcase
+                                    </h3>
+                                    <div class="grid grid-cols-1 gap-4">
+                                        <template x-for="project in extractedData.projects">
+                                            <div
+                                                class="group bg-gray-950/40 border border-gray-800 p-5 rounded-2xl flex flex-col justify-between hover:border-indigo-600 transition-all duration-300">
+                                                <div>
+                                                    <div class="flex items-center justify-between">
+                                                        <span
+                                                            class="text-[9px] font-bold text-indigo-400 uppercase tracking-widest">Project
+                                                            Details</span>
+                                                        <i
+                                                            class="fa-solid fa-code text-[10px] text-gray-600 group-hover:text-indigo-400 transition-colors"></i>
+                                                    </div>
+                                                    <h4 class="font-extrabold text-white text-base mt-2 group-hover:text-indigo-300 transition-colors truncate"
+                                                        x-text="project.name"></h4>
+                                                </div>
+                                                <div class="mt-4 pt-3 border-t border-gray-800">
+                                                    <span
+                                                        class="text-[9px] font-bold text-gray-500 uppercase tracking-wider block">Tech
+                                                        Stack</span>
+                                                    <p class="text-xs text-gray-300 mt-1 font-mono leading-relaxed"
+                                                        x-text="project.tech_stack"></p>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+
+                            <!-- Certifications Block -->
+                            <template x-if="extractedData.certifications && extractedData.certifications.length > 0">
+                                <div class="bg-gray-950/40 border border-gray-800 p-5 rounded-2xl">
+                                    <h3
+                                        class="text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2 mb-4">
+                                        <span
+                                            class="h-1.5 w-1.5 rounded-full bg-yellow-500 shadow-sm shadow-yellow-500"></span>
+                                        Certifications
+                                    </h3>
+                                    <div class="space-y-2">
+                                        <template x-for="cert in extractedData.certifications">
+                                            <div
+                                                class="flex items-start space-x-3 p-1.5 hover:bg-gray-900/50 rounded-xl transition-colors duration-200">
+                                                <div class="mt-0.5 text-yellow-500 flex-shrink-0">
+                                                    <i class="fa-solid fa-award text-sm"></i>
+                                                </div>
+                                                <span class="text-xs text-gray-300 font-medium" x-text="cert"></span>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+
+                    </div>
                 </div>
 
-                <!-- Middle Column (4/12 width): Detailed Showcase -->
-                <div class="md:col-span-4 space-y-6">
-                    
-                    <!-- Skills Showroom -->
-                    <div class="bg-gray-950/40 border border-gray-800 p-5 rounded-2xl">
-                        <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 flex items-center gap-2 mb-4">
-                            <span class="h-1.5 w-1.5 rounded-full bg-blue-500 shadow-sm shadow-blue-500"></span> Core Technical Skills
+                <!-- SECTION 2: Jobs Listed (Bottom) -->
+                <div class="border-t border-gray-800 pt-10 mt-10" x-show="extractedData">
+                    <div
+                        class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-gray-850 pb-4 mb-6 p-2">
+                        <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 flex items-center gap-2">
+                            <i class="fa-solid fa-briefcase text-green-400"></i> Matched Job Openings
                         </h3>
-                        <div class="flex flex-wrap gap-2">
-                            <template x-if="!extractedData.skills || extractedData.skills.length === 0">
-                                <span class="text-xs text-slate-500 italic">No skills extracted.</span>
-                            </template>
-                            <template x-for="skill in extractedData.skills">
-                                <span class="bg-gray-900 hover:bg-gray-850 text-gray-300 hover:text-white text-xs px-3.5 py-2 rounded-xl border border-gray-800 hover:border-gray-700 font-medium transition-all duration-300 shadow-sm" x-text="skill"></span>
-                            </template>
+
+                        <!-- Tab Switcher (Recommended vs Bookmarked Saved Jobs) -->
+                        <div class="flex items-center space-x-2 bg-gray-950/60 p-1 rounded-xl border border-gray-850">
+                            <button @click="jobViewTab = 'recommended'"
+                                class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all duration-200 cursor-pointer"
+                                :class="jobViewTab === 'recommended' ? 'bg-blue-600 text-white shadow shadow-blue-500/20' : 'text-gray-400 hover:text-white'">
+                                All Recommended
+                            </button>
+                            <button
+                                @click="isAuthenticated ? (jobViewTab = 'saved') : (showLoginModal = true; openOAuthPopup())"
+                                class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all duration-200 flex items-center gap-1.5 cursor-pointer"
+                                :class="jobViewTab === 'saved' ? 'bg-blue-600 text-white shadow shadow-blue-500/20' : 'text-gray-400 hover:text-white'">
+                                <span>My Bookmarks</span>
+                                <span class="bg-gray-850 font-bold px-1.5 py-0.5 rounded text-[10px]"
+                                    :class="jobViewTab === 'saved' ? 'bg-blue-700 text-white' : 'text-gray-300'"
+                                    x-text="savedJobs.length"></span>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Projects Showroom -->
-                    <template x-if="extractedData.projects && extractedData.projects.length > 0">
-                        <div>
-                            <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2 mb-4">
-                                <span class="h-1.5 w-1.5 rounded-full bg-indigo-500 shadow-sm shadow-indigo-500"></span> Projects Showcase
-                            </h3>
-                            <div class="grid grid-cols-1 gap-4">
-                                <template x-for="project in extractedData.projects">
-                                    <div class="group bg-gray-950/40 border border-gray-800 p-5 rounded-2xl flex flex-col justify-between hover:border-indigo-600 transition-all duration-300">
-                                        <div>
-                                            <div class="flex items-center justify-between">
-                                                <span class="text-[9px] font-bold text-indigo-400 uppercase tracking-widest">Project Details</span>
-                                                <i class="fa-solid fa-code text-[10px] text-gray-600 group-hover:text-indigo-400 transition-colors"></i>
-                                            </div>
-                                            <h4 class="font-extrabold text-white text-base mt-2 group-hover:text-indigo-300 transition-colors truncate" x-text="project.name"></h4>
-                                        </div>
-                                        <div class="mt-4 pt-3 border-t border-gray-800">
-                                            <span class="text-[9px] font-bold text-gray-500 uppercase tracking-wider block">Tech Stack</span>
-                                            <p class="text-xs text-gray-300 mt-1 font-mono leading-relaxed" x-text="project.tech_stack"></p>
-                                        </div>
-                                    </div>
-                                </template>
-                            </div>
-                        </div>
-                    </template>
+                    <!-- Unauthenticated warning banner (only visible on recommended tab if not signed in) -->
+                    <div x-show="!isAuthenticated && jobViewTab === 'recommended'"
+                        class="p-3 bg-yellow-950/20 border border-yellow-900/30 text-yellow-300/90 rounded-xl text-[11px] flex items-center gap-2 mb-6">
+                        <i class="fa-solid fa-lock text-sm"></i>
+                        <span>Sign in with Google or GitHub to see more than 5 recommendations and save your favorite
+                            jobs.</span>
+                    </div>
 
-                    <!-- Certifications Block -->
-                    <template x-if="extractedData.certifications && extractedData.certifications.length > 0">
-                        <div class="bg-gray-950/40 border border-gray-800 p-5 rounded-2xl">
-                            <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2 mb-4">
-                                <span class="h-1.5 w-1.5 rounded-full bg-yellow-500 shadow-sm shadow-yellow-500"></span> Certifications
-                            </h3>
-                            <div class="space-y-2">
-                                <template x-for="cert in extractedData.certifications">
-                                    <div class="flex items-start space-x-3 p-1.5 hover:bg-gray-900/50 rounded-xl transition-colors duration-200">
-                                        <div class="mt-0.5 text-yellow-500 flex-shrink-0">
-                                            <i class="fa-solid fa-award text-sm"></i>
-                                        </div>
-                                        <span class="text-xs text-gray-300 font-medium" x-text="cert"></span>
-                                    </div>
-                                </template>
-                            </div>
-                        </div>
-                    </template>
-                </div>
+                    <!-- Demo Mode Banner -->
+                    <div x-show="isDemo"
+                        class="p-4 bg-yellow-950/30 border border-yellow-800/50 text-yellow-300 rounded-2xl text-[11px] leading-relaxed mb-6">
+                        <i class="fa-solid fa-triangle-exclamation mr-1 text-xs"></i>
+                        Running in <strong>Demo Mode</strong>. Populate <code>RAPIDAPI_KEY</code> in your backend
+                        <code>.env</code> file to load real-time postings from LinkedIn, Indeed, and Google Jobs.
+                    </div>
 
-                <!-- Right Column (4/12 width): Matched Job Recommendations -->
-                <div class="md:col-span-4 space-y-6">
-                    <div class="bg-gray-950/40 border border-gray-800 p-5 rounded-2xl">
-                        <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-briefcase text-green-400"></i> Matched Job Openings
-                        </h3>
-                        
-                        <!-- Demo Mode Banner -->
-                        <div x-show="isDemo" class="p-3 bg-yellow-950/30 border border-yellow-800/50 text-yellow-300 rounded-xl text-[10px] leading-relaxed mb-4">
-                            <i class="fa-solid fa-triangle-exclamation mr-1 text-xs"></i> 
-                            Running in <strong>Demo Mode</strong>. Populate <code>RAPIDAPI_KEY</code> in your backend <code>.env</code> file to load real-time postings from LinkedIn, Indeed, and Google Jobs.
-                        </div>
+                    <!-- 5 columns job list grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+                        <template x-if="getVisibleJobs().length === 0">
+                            <span class="text-xs text-slate-500 italic col-span-full py-8 text-center block w-full">
+                                <span x-show="jobViewTab === 'saved'">You haven't bookmarked any jobs yet. Browse
+                                    recommendations and click the bookmark icon to save them.</span>
+                                <span x-show="jobViewTab === 'recommended'">No matching jobs found.</span>
+                            </span>
+                        </template>
 
-                        <div class="space-y-4">
-                            <template x-if="!matchedJobs || matchedJobs.length === 0">
-                                <span class="text-xs text-slate-500 italic">No matching jobs found.</span>
-                            </template>
-                            
-                            <template x-for="job in matchedJobs" :key="job.job_id">
-                                <div class="bg-gray-900 border border-gray-800 hover:border-blue-600 p-4 rounded-xl transition-all duration-300 flex flex-col justify-between space-y-3">
-                                    <div>
-                                        <div class="flex justify-between items-start gap-2">
-                                            <!-- Employer Info -->
-                                            <div class="flex items-center space-x-2">
-                                                <template x-if="job.employer_logo">
-                                                    <img :src="job.employer_logo" class="h-6 w-6 object-contain rounded bg-white flex-shrink-0" alt="Logo">
-                                                </template>
-                                                <template x-if="!job.employer_logo">
-                                                    <div class="h-6 w-6 rounded bg-gray-800 flex items-center justify-center text-[10px] text-gray-400 flex-shrink-0">
-                                                        <i class="fa-solid fa-building"></i>
-                                                    </div>
-                                                </template>
-                                                <span class="text-[10px] font-bold text-gray-400 truncate max-w-[120px]" x-text="job.employer_name"></span>
-                                            </div>
-                                            <!-- Match Badge -->
-                                            <span class="text-[9px] font-extrabold px-2 py-0.5 rounded-full border"
-                                                :class="{
-                                                    'bg-green-950/80 text-green-300 border-green-800': job.matchScore >= 80,
-                                                    'bg-blue-950/80 text-blue-300 border-blue-800': job.matchScore >= 60 && job.matchScore < 80,
-                                                    'bg-yellow-950/80 text-yellow-300 border-yellow-800': job.matchScore < 60
-                                                }" x-text="job.matchScore + '% Match'"></span>
-                                        </div>
-                                        <h4 class="font-bold text-white text-xs mt-2 truncate hover:text-blue-400" x-text="job.job_title"></h4>
-                                        <div class="flex items-center space-x-2 text-[9px] text-gray-500 mt-1">
-                                            <span x-text="job.job_city + (job.job_country ? ', ' + job.job_country : '')"></span>
-                                            <span>•</span>
-                                            <span class="uppercase font-semibold text-[8px]" x-text="job.job_employment_type"></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="pt-2 border-t border-gray-850">
-                                        <!-- Skills Matched -->
-                                        <div class="flex flex-wrap gap-1">
-                                            <template x-for="skill in job.matchedSkills">
-                                                <span class="bg-green-950/40 text-green-400 text-[8px] px-1.5 py-0.5 rounded font-medium border border-green-900/30" x-text="skill"></span>
+                        <template x-for="job in getVisibleJobs()" :key="job.job_id || job.jobId">
+                            <div
+                                class="bg-gray-950/50 border border-gray-800 hover:border-blue-600 p-4 rounded-2xl transition-all duration-300 flex flex-col justify-between space-y-4 hover:shadow-lg hover:shadow-blue-500/5">
+                                <div>
+                                    <div class="flex justify-between items-start gap-2">
+                                        <!-- Employer Info -->
+                                        <div class="flex items-center space-x-2 min-w-0">
+                                            <template x-if="job.employer_logo">
+                                                <img :src="job.employer_logo"
+                                                    class="h-6 w-6 object-contain rounded bg-white flex-shrink-0"
+                                                    alt="Logo">
                                             </template>
-                                            <template x-for="skill in job.missingSkills">
-                                                <span class="bg-gray-850 text-gray-500 text-[8px] px-1.5 py-0.5 rounded font-medium border border-gray-800/30" x-text="skill"></span>
+                                            <template x-if="!job.employer_logo">
+                                                <div
+                                                    class="h-6 w-6 rounded bg-gray-800 flex items-center justify-center text-[10px] text-gray-400 flex-shrink-0">
+                                                    <i class="fa-solid fa-building"></i>
+                                                </div>
                                             </template>
+                                            <span class="text-[10px] font-bold text-gray-400 truncate"
+                                                :title="job.employer_name" x-text="job.employer_name"></span>
                                         </div>
-                                        <div class="flex items-center justify-between mt-3 gap-2">
-                                            <span class="text-[9px] text-gray-500">via <span class="font-semibold text-gray-400" x-text="job.job_publisher"></span></span>
-                                            <a :href="job.job_apply_link" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white text-[9px] font-bold px-2.5 py-1 rounded transition-colors flex items-center space-x-1">
+                                        <!-- Match Badge -->
+                                        <span
+                                            class="text-[9px] font-extrabold px-2 py-0.5 rounded-full border flex-shrink-0"
+                                            :class="{
+                                            'bg-green-950/80 text-green-300 border-green-800': job.matchScore >= 80,
+                                            'bg-blue-950/80 text-blue-300 border-blue-800': job.matchScore >= 60 && job.matchScore < 80,
+                                            'bg-yellow-950/80 text-yellow-300 border-yellow-800': job.matchScore < 60
+                                        }" x-text="job.matchScore + '% Match'"></span>
+                                    </div>
+                                    <h4 class="font-bold text-white text-xs mt-3 truncate hover:text-blue-400"
+                                        :title="job.job_title" x-text="job.job_title"></h4>
+                                    <div class="flex items-center space-x-2 text-[10px] text-gray-500 mt-1">
+                                        <span class="truncate"
+                                            x-text="job.job_city + (job.job_country ? ', ' + job.job_country : '')"></span>
+                                        <span>•</span>
+                                        <span class="uppercase font-bold text-[8px] flex-shrink-0"
+                                            x-text="job.job_employment_type"></span>
+                                    </div>
+                                </div>
+
+                                <div class="pt-3 border-t border-gray-850">
+                                    <!-- Skills Matched -->
+                                    <div class="flex flex-wrap gap-1 mb-3">
+                                        <template x-for="skill in job.matchedSkills">
+                                            <span
+                                                class="bg-green-950/40 text-green-400 text-[8px] px-1.5 py-0.5 rounded font-medium border border-green-900/30"
+                                                x-text="skill"></span>
+                                        </template>
+                                        <template x-for="skill in job.missingSkills">
+                                            <span
+                                                class="bg-gray-850 text-gray-500 text-[8px] px-1.5 py-0.5 rounded font-medium border border-gray-800/30"
+                                                x-text="skill"></span>
+                                        </template>
+                                    </div>
+                                    <div class="flex items-center justify-between gap-2">
+                                        <span class="text-[9px] text-gray-500">via <span
+                                                class="font-semibold text-gray-400"
+                                                x-text="job.job_publisher"></span></span>
+                                        <div class="flex items-center space-x-2">
+                                            <!-- Save/Bookmark Toggle Button -->
+                                            <button @click="toggleSaveJob(job)"
+                                                class="p-1.5 rounded bg-gray-900 border border-gray-800 text-[10px] hover:bg-gray-850 hover:border-gray-700 transition-colors cursor-pointer"
+                                                :title="isJobSaved(job.job_id || job.jobId) ? 'Remove Bookmark' : 'Bookmark Job'">
+                                                <i class="fa-bookmark text-xs"
+                                                    :class="isJobSaved(job.job_id || job.jobId) ? 'fa-solid text-blue-500' : 'fa-regular text-gray-400'"></i>
+                                            </button>
+                                            <!-- Apply Redirect Button -->
+                                            <a :href="job.job_apply_link" target="_blank"
+                                                class="bg-blue-600 hover:bg-blue-700 text-white text-[9px] font-bold px-2.5 py-1.5 rounded transition-colors flex items-center space-x-1">
                                                 <span>Apply</span>
                                                 <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
                                             </a>
                                         </div>
                                     </div>
                                 </div>
-                            </template>
-                        </div>
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- Load More trigger -->
+                    <div x-show="matchedJobs.length > 5 && !showAllJobs" class="flex justify-center mt-10">
+                        <button @click="loadMoreJobs()"
+                            class="group px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl shadow-lg hover:shadow-blue-500/30 transition-all duration-300 active:scale-[0.98] cursor-pointer">
+                            <span class="flex items-center gap-2 p-2">
+                                <span>Load More Jobs</span>
+                                <i class="fa-solid fa-arrow-down group-hover:translate-y-0.5 transition-transform"></i>
+                            </span>
+                        </button>
                     </div>
                 </div>
+
+            </div>
         </div>
     </div>
-</div>
 
 
     <!-- =======================================================FEATURE SECTION================================================== -->
