@@ -1,11 +1,6 @@
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
-    provider: {
-        type: String,
-        required: true,
-        enum: ['google', 'github']
-    },
     name: {
         type: String,
         required: true
@@ -14,6 +9,14 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    role: {
+        type: String,
+        required: true
     },
     avatar: {
         type: String
