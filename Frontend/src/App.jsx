@@ -10,7 +10,8 @@ import Error404 from "./pages/Error404";
 const App = () => {
   return (
     <div className="bg-slate-100 dark:bg-slate-950 flex flex-col">
-      <Navbar />
+     <div className="min-h-screen">
+       <Navbar />
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="*" element={<Error404 />} />
         </Routes>
       </main>
+     </div>
       <Footer />
     </div>
   );

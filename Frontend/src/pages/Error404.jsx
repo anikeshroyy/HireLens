@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 const Error404 = () => {
   return (
-    <div className="min-h-[92vh] flex items-center justify-center">
+    <div className="min-h-[80vh] flex items-center justify-center">
       <div className="text-center">
         <div className="flex flex-col gap-5 p-5">
           <h1 className="text-6xl">👻</h1>
