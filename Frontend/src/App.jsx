@@ -5,10 +5,11 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Jobs from "./pages/Jobs";
 import Footer from "./components/Footer";
+import Error404 from "./pages/Error404";
 
 const App = () => {
   return (
-    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 flex flex-col">
+    <div className="bg-slate-100 dark:bg-slate-950 flex flex-col">
       <Navbar />
       <main className="flex-1">
         <Routes>
@@ -16,6 +17,7 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/jobs" element={<Jobs />} />
+          <Route path="*" element={<Error404 />} />
         </Routes>
       </main>
       <Footer />
