@@ -1,7 +1,31 @@
 import { NavLink } from "react-router-dom";
 import logo from "../assets/HireLens_Logo.png";
+import { useState } from "react";
 
 const Register = () => {
+  const initialFormData = {
+    name: "",
+    email: "",
+    role: "jobseeker",
+    password: "",
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
+
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+    setFormData(initialFormData);
+  };
+
   return (
     <div className="min-h-[80vh] flex items-center justify-center">
       <div className="flex flex-col justify-center items-center">
@@ -12,7 +36,11 @@ const Register = () => {
           <div className="w-full lg:min-w-sm min-w-80 border border-slate-300 dark:border-slate-600 rounded-2xl p-5">
             <div className="flex flex-col items-center justify-center">
               <img src={logo} alt="" className="w-12 h-12" />
-              <form action="" className="flex flex-col gap-2 w-full">
+              <form
+                action=""
+                onSubmit={handleSubmit}
+                className="flex flex-col gap-2 w-full"
+              >
                 <label
                   htmlFor="name"
                   className="block text-slate-800 dark:text-slate-100"
@@ -21,7 +49,12 @@ const Register = () => {
                 </label>
                 <input
                   type="text"
-                  id="email"
+                  id="name"
+                  required
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInput}
+                  autoComplete="off"
                   placeholder="Enter Your Full Name"
                   className="border border-blue-400 outline-none px-2 py-2 rounded-lg text-slate-700 dark:text-slate-100"
                 />
@@ -32,30 +65,36 @@ const Register = () => {
                   Email
                 </label>
                 <input
-                  type="text"
+                  type="email"
                   id="email"
+                  required
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInput}
                   placeholder="Enter Your Email"
                   className="border border-blue-400 outline-none px-2 py-2 rounded-lg text-slate-700 dark:text-slate-100"
                 />
                 <label
-                  htmlFor="email"
+                  htmlFor="role"
                   className="block text-slate-800 dark:text-slate-100"
                 >
                   Register As
                 </label>
                 <select
-                  name=""
-                  id=""
+                  name="role"
+                  id="role"
+                  value={formData.role}
+                  onChange={handleInput}
                   className="border border-blue-400 outline-none px-2 py-2 rounded-lg text-slate-700 dark:text-slate-100"
                 >
                   <option
-                    value=""
+                    value="jobseeker"
                     className="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-100"
                   >
-                    Job Sicker
+                    Job Seeker
                   </option>
                   <option
-                    value=""
+                    value="recruiter"
                     className="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-100"
                   >
                     Recruiter
@@ -68,8 +107,12 @@ const Register = () => {
                   Password
                 </label>
                 <input
-                  type="text"
+                  type="password"
                   id="password"
+                  required
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInput}
                   placeholder="Enter Your Password"
                   className="border border-blue-400 outline-none px-2 py-2 rounded-lg text-slate-700 dark:text-slate-100"
                 />
