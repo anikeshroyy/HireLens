@@ -1,6 +1,7 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../assets/HireLens_Logo.png";
 import { useState } from "react";
+import registerApi from "../services/api";
 
 const Register = () => {
   const initialFormData = {
@@ -20,10 +21,21 @@ const Register = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
-    setFormData(initialFormData);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+
+      await registerApi.post("/create/user", formData);
+
+      console.log(formData);
+      setFormData(initialFormData);
+
+      navigate("/login");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
