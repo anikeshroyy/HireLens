@@ -9,7 +9,7 @@ const UserDashboard = () => {
         {user ? (
           <section className="overflow-hidden rounded-3xl bg-white shadow-xl dark:bg-slate-800">
             {/* Header */}
-            <div className="h-32 bg-gradient-to-r from-blue-600 to-indigo-600" />
+            <div className="h-32 bg-linear-to-r from-blue-600 to-indigo-600" />
 
             {/* Profile content */}
             <div className="-mt-16 flex flex-col items-center gap-6 px-6 pb-8 sm:px-10 lg:-mt-20 lg:flex-row lg:items-end lg:gap-10">
