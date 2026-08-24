@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 import Error404 from "./pages/Error404";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import UserDashboard from "./pages/dashboard/UserDashboard";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
           <Route path="/jobs" element={<Jobs />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="*" element={<Error404 />} />
         </Routes>
       </main>
