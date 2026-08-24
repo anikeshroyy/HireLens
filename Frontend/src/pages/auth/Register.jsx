@@ -1,11 +1,11 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import logo from "../assets/HireLens_Logo.png";
+import logo from "../../assets/HireLens_Logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import {
   registerUser,
   updateformData,
   resetForm,
-} from "../redux/features/auth/registerSlice";
+} from "../../redux/features/auth/registerSlice";
 
 const Register = () => {
   const dispatch = useDispatch();

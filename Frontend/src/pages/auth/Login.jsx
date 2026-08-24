@@ -1,17 +1,19 @@
-import { NavLink } from "react-router-dom";
-import logo from "../assets/HireLens_Logo.png";
+import { NavLink, useNavigate } from "react-router-dom";
+import logo from "../../assets/HireLens_Logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import {
   loginUser,
   updateLoginFormData,
   resetFormData,
-} from "../redux/features/auth/loginSlice";
+} from "../../redux/features/auth/loginSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
   const { formData, error, loading, success } = useSelector(
     (state) => state.login,
   );
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,6 +22,7 @@ const Login = () => {
 
     if (loginUser.fulfilled.match(result)) {
       dispatch(resetFormData());
+      navigate("/dashboard");
     }
   };
 

@@ -6,8 +6,8 @@ import Contact from "./pages/Contact";
 import Jobs from "./pages/Jobs";
 import Footer from "./components/Footer";
 import Error404 from "./pages/Error404";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
 import UserDashboard from "./pages/dashboard/UserDashboard";
 
 const App = () => {
