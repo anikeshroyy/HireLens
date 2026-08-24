@@ -1,7 +1,32 @@
 import { NavLink } from "react-router-dom";
 import logo from "../assets/HireLens_Logo.png";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  loginUser,
+  updateLoginFormData,
+  resetFormData,
+} from "../redux/features/auth/loginSlice";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const { formData, error, success } = useSelector((state) => state.login);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const result = await dispatch(loginUser(formData));
+
+    if (loginUser.fulfilled.match(result)) {
+      console.log("User Logged In");
+      dispatch(resetFormData());
+    }
+  };
+
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    dispatch(updateLoginFormData({ name, value }));
+  };
+
   return (
     <div className="min-h-[80vh] flex items-center justify-center">
       <div className="flex flex-col justify-center items-center">
@@ -12,7 +37,11 @@ const Login = () => {
           <div className="w-full lg:min-w-sm min-w-80 border border-slate-300 dark:border-slate-600 rounded-2xl p-5">
             <div className="flex flex-col items-center justify-center">
               <img src={logo} alt="" className="w-12 h-12" />
-              <form action="" className="flex flex-col gap-2 w-full">
+              <form
+                action=""
+                onSubmit={handleSubmit}
+                className="flex flex-col gap-2 w-full"
+              >
                 <label
                   htmlFor="email"
                   className="block text-slate-800 dark:text-slate-100"
@@ -22,6 +51,9 @@ const Login = () => {
                 <input
                   type="text"
                   id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInput}
                   placeholder="Enter Your Email"
                   className="border border-blue-400 outline-none px-2 py-2 rounded-lg text-slate-700 dark:text-slate-100"
                 />
@@ -34,9 +66,15 @@ const Login = () => {
                 <input
                   type="text"
                   id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInput}
                   placeholder="Enter Your Password"
                   className="border border-blue-400 outline-none px-2 py-2 rounded-lg text-slate-700 dark:text-slate-100"
                 />
+
+                {error && <p className="text-red-600">{error}</p>}
+                {success && <p className="text-green-600">Login Success</p>}
 
                 <button className="bg-blue-500 dark:text-slate-200 text-slate-200 font-medium py-2 rounded-lg cursor-pointer">
                   Login Now
