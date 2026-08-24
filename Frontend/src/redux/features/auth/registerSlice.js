@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
-import authApi from '../../../services/api'
+import API from '../../../services/api'
 
 const initialState = {
     formData: {
@@ -19,7 +19,7 @@ export const registerUser = createAsyncThunk(
 
     async (formData, thunkApi) => {
         try {
-            const response = await authApi.post(
+            const response = await API.post(
                 "/create/user",
                 formData
             );
