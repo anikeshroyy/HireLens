@@ -9,7 +9,9 @@ import {
 
 const Login = () => {
   const dispatch = useDispatch();
-  const { formData, error, success } = useSelector((state) => state.login);
+  const { formData, error, loading, success } = useSelector(
+    (state) => state.login,
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,7 +19,6 @@ const Login = () => {
     const result = await dispatch(loginUser(formData));
 
     if (loginUser.fulfilled.match(result)) {
-      console.log("User Logged In");
       dispatch(resetFormData());
     }
   };
@@ -34,7 +35,7 @@ const Login = () => {
           <h1 className="text-slate-900 dark:text-slate-200 text-center text-2xl lg:text-3xl font-medium my-5">
             Login to Hirelens
           </h1>
-          <div className="w-full lg:min-w-sm min-w-80 border border-slate-300 dark:border-slate-600 rounded-2xl p-5">
+          <div className="w-full lg:min-w-sm min-w-80 border border-slate-300 dark:border-slate-800 bg-slate-200 dark:bg-slate-900 rounded-2xl p-5">
             <div className="flex flex-col items-center justify-center">
               <img src={logo} alt="" className="w-12 h-12" />
               <form
@@ -76,14 +77,17 @@ const Login = () => {
                 {error && <p className="text-red-600">{error}</p>}
                 {success && <p className="text-green-600">Login Success</p>}
 
-                <button className="bg-blue-500 dark:text-slate-200 text-slate-200 font-medium py-2 rounded-lg cursor-pointer">
-                  Login Now
+                <button
+                  disabled={loading}
+                  className="bg-blue-500 dark:text-slate-200 text-slate-200 font-medium py-2 rounded-lg cursor-pointer"
+                >
+                  {loading ? "Logging in..." : "Login Now"}
                 </button>
               </form>
 
               <div className="w-full flex flex-col items-center justify-center">
                 <div className="border border-slate-500 mt-5 w-full"></div>
-                <div className="-mt-3.75 bg-slate-100 dark:bg-slate-950 px-2">
+                <div className="-mt-3.75 bg-slate-200 dark:bg-slate-900 px-2">
                   <h1 className="dark:text-slate-200 text-slate-700">
                     New Here?
                   </h1>
