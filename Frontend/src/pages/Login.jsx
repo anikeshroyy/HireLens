@@ -50,9 +50,10 @@ const Login = () => {
                   Email
                 </label>
                 <input
-                  type="text"
+                  type="email"
                   id="email"
                   name="email"
+                  required
                   value={formData.email}
                   onChange={handleInput}
                   placeholder="Enter Your Email"
@@ -65,9 +66,10 @@ const Login = () => {
                   Password
                 </label>
                 <input
-                  type="text"
+                  type="password"
                   id="password"
                   name="password"
+                  required
                   value={formData.password}
                   onChange={handleInput}
                   placeholder="Enter Your Password"

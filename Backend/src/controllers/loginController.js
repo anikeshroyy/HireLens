@@ -24,7 +24,14 @@ const loginUser = async (req, res) => {
 
         res.cookie("token", token)
         res.status(200).json({
-            message: "User LoggedIn"
+            message: "User LoggedIn",
+            user: {
+                userId: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                avatar: user.avatar,
+            },
         })
     }
     catch (error) {

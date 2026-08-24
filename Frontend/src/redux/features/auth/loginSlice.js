@@ -10,6 +10,8 @@ const initialState = {
     error: null,
     loading: false,
     success: false,
+    isAuthenticated: false,
+    user: null,
 }
 
 export const loginUser = createAsyncThunk(
@@ -51,9 +53,11 @@ const loginSlice = createSlice({
                 state.success = false
         })
 
-        builder.addCase(loginUser.fulfilled, (state) => {
+        builder.addCase(loginUser.fulfilled, (state, action) => {
             state.loading = false,
-                state.success = true
+                state.success = true,
+                state.isAuthenticated = true,
+                state.user = action.payload.user
         })
 
         builder.addCase(loginUser.rejected, (state, action) => {
