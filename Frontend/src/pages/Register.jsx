@@ -1,41 +1,41 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../assets/HireLens_Logo.png";
-import { useState } from "react";
-import registerApi from "../services/api";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  registerUser,
+  updateformData,
+  resetForm,
+} from "../redux/features/auth/registerSlice";
 
 const Register = () => {
-  const initialFormData = {
-    name: "",
-    email: "",
-    role: "jobseeker",
-    password: "",
-  };
-
-  const [formData, setFormData] = useState(initialFormData);
-
-  const handleInput = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  const dispatch = useDispatch();
+  const { formData, error, loading, success } = useSelector(
+    (state) => state.register,
+  );
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    try {
-      e.preventDefault();
+    e.preventDefault();
 
-      await registerApi.post("/create/user", formData);
+    const result = await dispatch(registerUser(formData));
 
-      console.log(formData);
-      setFormData(initialFormData);
+    if (registerUser.fulfilled.match(result)) {
+      dispatch(resetForm());
 
       navigate("/login");
-    } catch (err) {
-      console.log(err);
     }
+  };
+
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+
+    dispatch(
+      updateformData({
+        name,
+        value,
+      }),
+    );
   };
 
   return (
@@ -45,7 +45,7 @@ const Register = () => {
           <h1 className="text-slate-900 dark:text-slate-200 text-center text-2xl lg:text-3xl font-medium my-5">
             Create Account
           </h1>
-          <div className="w-full lg:min-w-sm min-w-80 border border-slate-300 dark:border-slate-600 rounded-2xl p-5">
+          <div className="w-full lg:min-w-sm min-w-80 border border-slate-300 dark:border-slate-800 dark:bg-slate-900 bg-slate-200 rounded-2xl p-5">
             <div className="flex flex-col items-center justify-center">
               <img src={logo} alt="" className="w-12 h-12" />
               <form
@@ -129,14 +129,20 @@ const Register = () => {
                   className="border border-blue-400 outline-none px-2 py-2 rounded-lg text-slate-700 dark:text-slate-100"
                 />
 
-                <button className="bg-blue-500 dark:text-slate-200 text-slate-200 font-medium py-2 rounded-lg cursor-pointer">
-                  Create Account
+                {error && <p className="text-red-600">{error}</p>}
+                {success && <p className="text-green-600">{success}</p>}
+
+                <button
+                  className="bg-blue-500 dark:text-slate-200 text-slate-200 font-medium py-2 rounded-lg cursor-pointer"
+                  disabled={loading}
+                >
+                  {loading ? "Creating Account ... " : "Create Account"}
                 </button>
               </form>
 
               <div className="w-full flex flex-col items-center justify-center">
                 <div className="border border-slate-500 mt-5 w-full"></div>
-                <div className="-mt-3.75 bg-slate-100 dark:bg-slate-950 px-2">
+                <div className="-mt-3.75 dark:bg-slate-900 bg-slate-200 px-2">
                   <h1 className="dark:text-slate-200 text-slate-700">
                     Have an Account?
                   </h1>
