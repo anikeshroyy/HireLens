@@ -11,7 +11,7 @@ const Footer = () => {
   return (
     <>
       <footer className="bg-slate-200/10 dark:bg-slate-900/30 p-8 -mt-1 sm:p-6">
-        <div className="mx-auto max-w-screen-xl">
+        <div className="mx-auto max-w-7xl">
           <div className="md:flex md:justify-between">
             {/* Logo */}
             <div className="mb-6 md:mb-0">
