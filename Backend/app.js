@@ -2,7 +2,6 @@ const express = require('express')
 const cors = require('cors')
 
 const connectDB = require('./src/config/db')
-const userModel = require('./src/models/User')
 
 const cookieParser = require('cookie-parser')
 
@@ -38,6 +37,7 @@ app.use('/', authRouter)
 app.use('/', jobRouter)
 app.use('/', loginRouter)
 app.use('/', currentUserRouter)
+// app.use('/', currentUserRouter)
 
 
 app.listen(PORT, () => {

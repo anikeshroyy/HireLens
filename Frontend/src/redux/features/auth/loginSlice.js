@@ -43,6 +43,20 @@ export const getCurrentUser = createAsyncThunk(
     }
 )
 
+export const logoutUser = createAsyncThunk(
+    "logout/logoutUser",
+    async (_, thunkApi) => {
+        try {
+            const response = await API.post("/logout");
+            return response.data
+        } catch (error) {
+            return thunkApi.rejectWithValue(
+                error.response?.data?.message || "Can't get current user"
+            )
+        }
+    }
+)
+
 const loginSlice = createSlice({
     name: "login",
 
@@ -58,22 +72,19 @@ const loginSlice = createSlice({
                 email: "",
                 password: "",
             }
-        },
-        logout: (state) => {
-            state.user = null,
-                state.isAuthenticated = false,
-                state.success = false,
-                state.error = null
         }
     },
 
     extraReducers: (builder) => {
+
+        // LogIn User Checking
         builder.addCase(loginUser.pending, (state) => {
             state.loading = true,
                 state.error = null,
                 state.success = false
         })
 
+        // LogIn User Completed
         builder.addCase(loginUser.fulfilled, (state, action) => {
             state.loading = false,
                 state.success = true,
@@ -81,6 +92,7 @@ const loginSlice = createSlice({
                 state.user = action.payload.user
         })
 
+        // LogIn Failed
         builder.addCase(loginUser.rejected, (state, action) => {
             state.loading = false,
                 state.success = false,
@@ -89,6 +101,7 @@ const loginSlice = createSlice({
                 state.user = null
         })
 
+        // Existing session checking
         builder.addCase(
             getCurrentUser.pending,
             (state) => {
@@ -115,9 +128,17 @@ const loginSlice = createSlice({
                 state.isAuthenticated = false;
                 state.user = null;
             });
+
+        // LogOut Completed
+        builder.addCase(logoutUser.fulfilled, (state) => {
+            state.user = null;
+            state.isAuthenticated = false;
+            state.success = false;
+            state.error = null;
+        });
     }
 })
 
-export const { updateLoginFormData, resetFormData, logout } = loginSlice.actions
+export const { updateLoginFormData, resetFormData } = loginSlice.actions
 
 export default loginSlice.reducer;

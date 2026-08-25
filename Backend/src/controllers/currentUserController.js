@@ -36,10 +36,27 @@ const getCurrentUser = async (req, res) => {
 
     } catch (error) {
         return res.status(500).json({
-            message: "Something went wrong",
+            message: "Something Went Wrong",
             error: error.message
         })
     }
 }
 
-module.exports = { getCurrentUser }
+const logoutUser = (req, res) => {
+    try {
+        const token = req.cookies
+        if (token) {
+            return res.status(200).clearCookie("token").json({
+                message: "Cookies are cleared"
+            })
+        }
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "Something Went Wrong",
+            error: error.message
+        })
+    }
+}
+
+module.exports = { getCurrentUser, logoutUser }

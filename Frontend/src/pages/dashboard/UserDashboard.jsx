@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../redux/features/auth/loginSlice";
+import { logoutUser } from "../../redux/features/auth/loginSlice";
 import { NavLink } from "react-router-dom";
 
 const UserDashboard = () => {
@@ -7,7 +7,7 @@ const UserDashboard = () => {
   const dispatch = useDispatch();
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logoutUser());
   };
 
   return (
