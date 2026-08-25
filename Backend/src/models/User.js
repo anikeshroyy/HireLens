@@ -19,7 +19,8 @@ const UserSchema = new mongoose.Schema({
         required: true
     },
     avatar: {
-        type: String
+        type: String,
+        default: "https://www.svgrepo.com/show/355688/user-a-solid.svg"
     },
     createdAt: {
         type: Date,

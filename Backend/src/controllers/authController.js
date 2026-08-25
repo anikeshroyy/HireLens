@@ -10,8 +10,7 @@ const createUser = async (req, res) => {
             name: req.body.name,
             email: req.body.email,
             password: hashedPassword,
-            role: req.body.role,
-            avatar: ""
+            role: req.body.role
         })
         res.status(201).json(user)
     } catch (error) {
