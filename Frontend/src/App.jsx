@@ -9,25 +9,34 @@ import Error404 from "./pages/Error404";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import UserDashboard from "./pages/dashboard/UserDashboard";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { getCurrentUser } from "./redux/features/auth/loginSlice";
 
 const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCurrentUser());
+  }, [dispatch]);
+
   return (
     <div className="bg-slate-100 dark:bg-slate-950 flex flex-col">
-     <div className="min-h-screen">
-       <Navbar />
-      <main className="flex-1">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/jobs" element={<Jobs />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<UserDashboard />} />
-          <Route path="*" element={<Error404 />} />
-        </Routes>
-      </main>
-     </div>
+      <div className="min-h-screen">
+        <Navbar />
+        <main className="flex-1">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/jobs" element={<Jobs />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/dashboard" element={<UserDashboard />} />
+            <Route path="*" element={<Error404 />} />
+          </Routes>
+        </main>
+      </div>
       <Footer />
     </div>
   );

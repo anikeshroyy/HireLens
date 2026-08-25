@@ -1,7 +1,14 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../redux/features/auth/loginSlice";
+import { NavLink } from "react-router-dom";
 
 const UserDashboard = () => {
   const { user } = useSelector((state) => state.login);
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   return (
     <main className="min-h-[85vh] bg-slate-100 px-4 py-10 dark:bg-slate-950">
@@ -43,9 +50,16 @@ const UserDashboard = () => {
               <div className="w-full sm:w-auto">
                 <button
                   type="button"
-                  className="w-full rounded-xl bg-blue-600 px-6 py-3 font-medium text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800 sm:w-auto"
+                  className="w-full rounded-xl bg-blue-600 px-6 py-3 font-medium text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800 sm:w-auto cursor-pointer"
                 >
                   Edit Profile
+                </button>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="w-full ml-4 rounded-xl bg-red-600 px-6 py-3 font-medium text-white transition hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800 sm:w-auto cursor-pointer"
+                >
+                  Logout
                 </button>
               </div>
             </div>
@@ -97,12 +111,12 @@ const UserDashboard = () => {
               Please log in to view your dashboard and manage your profile.
             </p>
 
-            <button
-              type="button"
-              className="mt-6 rounded-xl bg-blue-600 px-6 py-3 font-medium text-white transition hover:bg-blue-700"
+            <NavLink
+              to="/login"
+              className="mt-6 rounded-lg active:scale-95 bg-blue-600 px-6 py-3 font-medium text-white transition hover:bg-blue-700 cursor-pointer"
             >
               Login
-            </button>
+            </NavLink>
           </section>
         )}
       </div>

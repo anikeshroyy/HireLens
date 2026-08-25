@@ -4,9 +4,12 @@ const cors = require('cors')
 const connectDB = require('./src/config/db')
 const userModel = require('./src/models/User')
 
+const cookieParser = require('cookie-parser')
+
 const authRouter = require('./src/routes/authRoutes')
 const jobRouter = require('./src/routes/jobRoutes')
 const loginRouter = require('./src/routes/loginRoutes')
+const currentUserRouter = require('./src/routes/currentUserRoutes')
 
 const app = express()
 
@@ -21,6 +24,7 @@ app.use(cors(corsOptions))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
+app.use(cookieParser())
 
 const PORT = 3000;
 
@@ -33,6 +37,7 @@ app.get('/', (req, res) => {
 app.use('/', authRouter)
 app.use('/', jobRouter)
 app.use('/', loginRouter)
+app.use('/', currentUserRouter)
 
 
 app.listen(PORT, () => {
