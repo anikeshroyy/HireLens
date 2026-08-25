@@ -19,11 +19,7 @@ const Navbar = () => {
 
   const { theme, toggleTheme } = useTheme();
 
-  const { isAuthenticated, user } = useSelector((state) => state.login);
-
-  if (isAuthenticated) {
-    console.log("This user from navbar", user);
-  }
+  const { user } = useSelector((state) => state.login);
 
   return (
     <nav className="w-full bg-slate-100 dark:bg-slate-950 border-b border-slate-400 dark:border-slate-800 sticky top-0 z-50">
