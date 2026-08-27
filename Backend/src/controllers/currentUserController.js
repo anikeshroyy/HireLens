@@ -44,12 +44,15 @@ const getCurrentUser = async (req, res) => {
 
 const logoutUser = (req, res) => {
     try {
-        const token = req.cookies
-        if (token) {
-            return res.status(200).clearCookie("token").json({
-                message: "Cookies are cleared"
-            })
-        }
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none"
+        });
+
+        return res.status(200).json({
+            message: "Cookies are cleared"
+        });
 
     } catch (error) {
         return res.status(500).json({
