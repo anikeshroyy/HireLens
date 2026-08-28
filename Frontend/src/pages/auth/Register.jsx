@@ -133,10 +133,17 @@ const Register = () => {
                 {success && <p className="text-green-600">{success}</p>}
 
                 <button
-                  className="bg-blue-500 dark:text-slate-200 text-slate-200 font-medium py-2 rounded-lg cursor-pointer"
                   disabled={loading}
+                  className="bg-blue-500 mt-4 mb-3 text-slate-200 font-medium py-2 rounded-lg cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                  {loading ? "Creating Account ... " : "Create Account"}
+                  {loading ? (
+                    <>
+                      <span className="w-4 h-4 border-2 border-slate-200 border-t-transparent rounded-full animate-spin"></span>
+                      Creating Account...
+                    </>
+                  ) : (
+                    "Create Account"
+                  )}
                 </button>
               </form>
 
@@ -150,7 +157,7 @@ const Register = () => {
               </div>
               <NavLink
                 to="/login"
-                className="bg-slate-500 w-full text-center mt-3 dark:text-slate-200 text-slate-200 font-medium py-2 rounded-lg cursor-pointer"
+                className="bg-slate-500 w-full text-center mt-5 dark:text-slate-200 text-slate-200 font-medium py-2 rounded-lg cursor-pointer"
               >
                 Login
               </NavLink>

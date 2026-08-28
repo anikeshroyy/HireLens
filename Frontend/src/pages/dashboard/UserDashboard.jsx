@@ -16,26 +16,26 @@ const UserDashboard = () => {
         {user ? (
           <section className="overflow-hidden rounded-3xl bg-white shadow-xl dark:bg-slate-800">
             {/* Header */}
-            <div className="h-32 bg-linear-to-r from-blue-600 to-indigo-600" />
+            <div className="h-32 bg-linear-to-r from-pink-600 to-indigo-600" />
 
             {/* Profile content */}
-            <div className="-mt-16 flex flex-col items-center gap-6 px-6 pb-8 sm:px-10 lg:-mt-20 lg:flex-row lg:items-end lg:gap-10">
+            <div className="-mt-19 flex flex-col items-center gap-6 px-6 pb-8 sm:px-10 lg:-mt-21 lg:flex-row lg:items-center lg:gap-10">
               {/* Avatar */}
               <div className="shrink-0">
                 <img
                   src={user?.avatar}
                   alt={`${user?.name || "User"} profile`}
-                  className="h-36 w-36 rounded-full border-4 border-white object-cover shadow-lg dark:border-slate-800 lg:h-40 lg:w-40"
+                  className="h-36 w-36 rounded-full border-2 border-slate-400 object-cover shadow-lg dark:border-slate-200 lg:h-40 lg:w-40"
                 />
               </div>
 
               {/* User information */}
               <div className="w-full flex-1 text-center lg:text-left">
-                <h1 className="text-2xl font-bold capitalize text-slate-900 dark:text-white lg:text-3xl">
+                <h1 className="text-2xl font-bold capitalize lg:text-slate-200 dark:text-white lg:text-3xl">
                   {user?.name || "User"}
                 </h1>
 
-                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 lg:text-base">
+                <p className="lg:-mt-2 lg:mb-3 text-sm lg:text-slate-300 dark:text-slate-300 lg:text-base">
                   {user?.email || "No email available"}
                 </p>
 
@@ -50,16 +50,9 @@ const UserDashboard = () => {
               <div className="w-full sm:w-auto">
                 <button
                   type="button"
-                  className="w-full rounded-xl bg-blue-600 px-6 py-3 font-medium text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800 sm:w-auto cursor-pointer"
+                  className="w-full rounded-lg bg-blue-500 px-6 py-3 font-medium text-white transition hover:bg-blue-700 active:scale-95 sm:w-auto cursor-pointer"
                 >
                   Edit Profile
-                </button>
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  className="w-full ml-4 rounded-xl bg-red-600 px-6 py-3 font-medium text-white transition hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800 sm:w-auto cursor-pointer"
-                >
-                  Logout
                 </button>
               </div>
             </div>
@@ -95,6 +88,13 @@ const UserDashboard = () => {
                   {user?.role || "Not available"}
                 </p>
               </div>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="w-full rounded-lg bg-red-600 px-6 py-3 font-medium text-white transition hover:bg-red-700 active:scale-95 sm:w-auto cursor-pointer"
+              >
+                Logout
+              </button>
             </div>
           </section>
         ) : (
