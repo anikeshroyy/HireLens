@@ -12,6 +12,7 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getCurrentUser } from "./redux/features/auth/loginSlice";
+import CreateJob from "./components/jobs/CreateJob";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/createJobs" element={<CreateJob />} />
             <Route path="*" element={<Error404 />} />
           </Routes>
         </main>
