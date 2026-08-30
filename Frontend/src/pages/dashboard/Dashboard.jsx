@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../redux/features/auth/loginSlice";
 import { NavLink } from "react-router-dom";
-import AppliedJobs from "../../components/AppliedJobs";
-import PostedJobs from "../../components/PostedJobs";
+import AppliedJobs from "../../components/jobs/AppliedJobs";
+import PostedJobs from "../../components/jobs/PostedJobs";
 
 const Dashboard = () => {
   const { user } = useSelector((state) => state.login);

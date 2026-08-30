@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import JobCard from "../components/JobCard";
+import JobCard from "../components/jobs/JobCard";
 import { getAllJobs } from "../redux/features/job/jobSlice";
 import { useDispatch, useSelector } from "react-redux";
 
