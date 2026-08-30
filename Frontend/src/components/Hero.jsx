@@ -24,9 +24,9 @@ const Hero = () => {
           </p>
         </div>
 
-        <NavLink to="/register">
+        <NavLink to="/jobs">
           <button className="bg-blue-600 shadow-md  dark:shadow-slate-800 shadow-blue-900 text-slate-100 dark:text-slate-200 px-6 py-2 mt-10 cursor-pointer font-medium">
-            Get Started
+            Explore All Jobs
           </button>
         </NavLink>
       </div>
