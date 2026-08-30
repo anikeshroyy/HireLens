@@ -4,5 +4,6 @@ const jobController = require('../controllers/jobController');
 
 // POST /api/jobs/save
 router.post('/create/job', jobController.createJob);
+router.get('/jobs', jobController.getAllJobs)
 
 module.exports = router;

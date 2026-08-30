@@ -8,7 +8,7 @@ import Footer from "./components/Footer";
 import Error404 from "./pages/Error404";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
-import UserDashboard from "./pages/dashboard/UserDashboard";
+import Dashboard from "./pages/dashboard/Dashboard";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getCurrentUser } from "./redux/features/auth/loginSlice";
@@ -32,7 +32,7 @@ const App = () => {
             <Route path="/jobs" element={<Jobs />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/dashboard" element={<UserDashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="*" element={<Error404 />} />
           </Routes>
         </main>

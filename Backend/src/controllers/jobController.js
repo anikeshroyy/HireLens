@@ -13,7 +13,7 @@ const createJob = async (req, res) => {
             job_country: req.body.job_country,
             job_employment_type: req.body.job_employment_type,
             job_salary: req.body.job_salary,
-            skill: "Java"
+            skills: req.body.skills
         })
         res.status(201).json(job)
     } catch (error) {
@@ -24,4 +24,16 @@ const createJob = async (req, res) => {
     }
 }
 
-module.exports = { createJob }
+const getAllJobs = async (req, res) => {
+    try {
+        const alljobs = await jobModel.find()
+        return res.status(200).json(alljobs)
+    } catch (error) {
+        return res.status(500).json({
+            message: "failed to fetch job",
+            errpr: error.message
+        })
+    }
+}
+
+module.exports = { createJob, getAllJobs }

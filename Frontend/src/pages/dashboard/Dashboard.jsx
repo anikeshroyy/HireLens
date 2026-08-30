@@ -1,8 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../redux/features/auth/loginSlice";
 import { NavLink } from "react-router-dom";
+import AppliedJobs from "../../components/AppliedJobs";
+import PostedJobs from "../../components/PostedJobs";
 
-const UserDashboard = () => {
+const Dashboard = () => {
   const { user } = useSelector((state) => state.login);
   const dispatch = useDispatch();
 
@@ -96,6 +98,9 @@ const UserDashboard = () => {
                 Logout
               </button>
             </div>
+            <section>
+              {user.role === "jobseeker" ? <AppliedJobs /> : <PostedJobs />}
+            </section>
           </section>
         ) : (
           <section className="flex min-h-100 flex-col items-center justify-center rounded-3xl bg-white p-8 text-center shadow-xl dark:bg-slate-800">
@@ -124,4 +129,4 @@ const UserDashboard = () => {
   );
 };
 
-export default UserDashboard;
+export default Dashboard;
