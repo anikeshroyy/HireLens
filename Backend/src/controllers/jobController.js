@@ -1,9 +1,23 @@
+require('dotenv').config()
+
 const jobModel = require('../models/Job')
+
+const jwt = require('jsonwebtoken')
 
 const createJob = async (req, res) => {
     try {
+
+        const cookie = req.cookies.token;
+        if (!cookie) {
+            res.status(401).json({
+                message: "Login please to create job"
+            })
+        }
+
+        const decoded = jwt.verify(cookie, process.env.JWT_SECRETS)
+
         let job = await jobModel.create({
-            userId: "6a84219cde5f8544080d0554",
+            userId: decoded.id,
             jobId: req.body.jobId,
             employer_logo: req.body.employer_logo,
             job_publisher: req.body.job_publisher,

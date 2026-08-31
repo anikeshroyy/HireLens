@@ -1,9 +1,39 @@
+import { useDispatch, useSelector } from "react-redux";
+import {
+  updateJobData,
+  resetJobData,
+  createJobs,
+} from "../../redux/features/job/createJobSlice";
+
 const CreateJob = () => {
   const inputStyle =
     "w-full rounded-lg border border-slate-300 bg-slate-100 px-3 py-2.5 text-sm text-slate-800 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200";
 
   const labelStyle =
     "mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300";
+
+  const dispatch = useDispatch();
+  const { jobData } = useSelector((state) => state.createJobs);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const result = await dispatch(createJobs(jobData));
+    if (createJobs.fulfilled.match(result)) {
+      console.log(jobData);
+      dispatch(resetJobData());
+    }
+  };
+
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+
+    dispatch(
+      updateJobData({
+        name,
+        value,
+      }),
+    );
+  };
 
   return (
     <div className="min-h-screen px-4 py-8">
@@ -21,7 +51,7 @@ const CreateJob = () => {
 
         {/* Form Card */}
         <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-8">
-          <form>
+          <form action="" onSubmit={handleSubmit}>
             <div className="space-y-6">
               {/* Basic Information */}
               <div>
@@ -42,8 +72,10 @@ const CreateJob = () => {
 
                 <input
                   id="job_title"
-                  name="job_title"
                   type="text"
+                  name="job_title"
+                  value={jobData.job_title}
+                  onChange={handleInput}
                   placeholder="e.g. MERN Stack Developer"
                   className={inputStyle}
                 />
@@ -60,6 +92,8 @@ const CreateJob = () => {
                   <input
                     id="job_publisher"
                     name="job_publisher"
+                    value={jobData.job_publisher}
+                    onChange={handleInput}
                     type="text"
                     placeholder="e.g. Infosys"
                     className={inputStyle}
@@ -74,6 +108,8 @@ const CreateJob = () => {
                   <input
                     id="jobId"
                     name="jobId"
+                    value={jobData.jobId}
+                    onChange={handleInput}
                     type="text"
                     placeholder="e.g. JOB-001"
                     className={inputStyle}
@@ -90,6 +126,8 @@ const CreateJob = () => {
                 <textarea
                   id="job_description"
                   name="job_description"
+                  value={jobData.job_description}
+                  onChange={handleInput}
                   rows="4"
                   placeholder="Describe the role, responsibilities and requirements..."
                   className="w-full rounded-lg border border-slate-300 bg-slate-100 px-3 py-2.5 text-sm text-slate-800 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
@@ -111,6 +149,8 @@ const CreateJob = () => {
                     <input
                       id="job_country"
                       name="job_country"
+                      value={jobData.job_country}
+                      onChange={handleInput}
                       type="text"
                       placeholder="e.g. India"
                       className={inputStyle}
@@ -125,6 +165,8 @@ const CreateJob = () => {
                     <input
                       id="job_city"
                       name="job_city"
+                      value={jobData.job_city}
+                      onChange={handleInput}
                       type="text"
                       placeholder="e.g. Bangalore"
                       className={inputStyle}
@@ -148,6 +190,8 @@ const CreateJob = () => {
                     <select
                       id="job_employment_type"
                       name="job_employment_type"
+                      value={jobData.job_employment_type}
+                      onChange={handleInput}
                       className={inputStyle}
                       defaultValue=""
                     >
@@ -171,6 +215,8 @@ const CreateJob = () => {
                     <input
                       id="job_salary"
                       name="job_salary"
+                      value={jobData.job_salary}
+                      onChange={handleInput}
                       type="text"
                       placeholder="e.g. ₹6 - ₹10 LPA"
                       className={inputStyle}
@@ -187,7 +233,9 @@ const CreateJob = () => {
 
                 <input
                   id="skills"
-                  name="skills"
+                  name="job_skills"
+                  value={jobData.job_skills}
+                  onChange={handleInput}
                   type="text"
                   placeholder="e.g. React.js, Node.js, MongoDB, Express.js"
                   className={inputStyle}
@@ -207,6 +255,8 @@ const CreateJob = () => {
                 <input
                   id="employer_logo"
                   name="employer_logo"
+                  value={jobData.employer_logo}
+                  onChange={handleInput}
                   type="url"
                   placeholder="https://example.com/logo.png"
                   className={inputStyle}
@@ -219,10 +269,7 @@ const CreateJob = () => {
 
               {/* Submit */}
               <div className="border-t border-slate-200 pt-6 dark:border-slate-800">
-                <button
-                  type="submit"
-                  className="w-full rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 active:scale-[0.99] sm:w-auto"
-                >
+                <button className="w-full rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 active:scale-[0.99] sm:w-auto">
                   Create Job
                 </button>
               </div>
