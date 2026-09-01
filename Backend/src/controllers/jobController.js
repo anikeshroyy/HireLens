@@ -2,14 +2,15 @@ require('dotenv').config()
 
 const jobModel = require('../models/Job')
 
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const { findById } = require('../models/User');
 
 const createJob = async (req, res) => {
     try {
 
         const cookie = req.cookies.token;
         if (!cookie) {
-            res.status(401).json({
+            return res.status(401).json({
                 message: "Login please to create job"
             })
         }
@@ -50,4 +51,28 @@ const getAllJobs = async (req, res) => {
     }
 }
 
-module.exports = { createJob, getAllJobs }
+
+const myJobs = async (req, res) => {
+    try {
+        const cookie = req.cookies.token;
+        if (!cookie) {
+            return res.status(401).json({
+                message: "Login please to create job"
+            })
+        }
+
+        const decoded = jwt.verify(cookie, process.env.JWT_SECRETS);
+
+        const jobsByRecruiter = await jobModel.find({ userId: decoded.id });
+
+        return res.status(200).json(jobsByRecruiter)
+    }
+
+    catch (error) {
+        res.status(500).json({
+            error: error.message
+        })
+    }
+}
+
+module.exports = { createJob, getAllJobs, myJobs }

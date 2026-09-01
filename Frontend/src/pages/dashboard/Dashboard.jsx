@@ -1,8 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../redux/features/auth/loginSlice";
 import { NavLink } from "react-router-dom";
-// import AppliedJobs from "../../components/jobs/AppliedJobs";
-// import PostedJobs from "../../components/jobs/PostedJobs";
+import AppliedJobs from "../../components/jobs/AppliedJobs";
+import PostedJobs from "../../components/jobs/PostedJobs";
+
+import { myJobs } from "../../redux/features/job/jobSlice";
+import { useEffect } from "react";
 
 const Dashboard = () => {
   const { user } = useSelector((state) => state.login);
@@ -11,6 +14,14 @@ const Dashboard = () => {
   const handleLogout = () => {
     dispatch(logoutUser());
   };
+
+  useEffect(() => {
+    if (user?.role === "recruiter") {
+      dispatch(myJobs());
+    }
+  }, [dispatch, user?.role]);
+  
+  const { jobsByRecruiter } = useSelector((state) => state.allJobs);
 
   return (
     <main className="min-h-[85vh] bg-slate-100 px-4 py-10 dark:bg-slate-950">
@@ -49,7 +60,19 @@ const Dashboard = () => {
               </div>
 
               {/* Action */}
-              <div className="w-full sm:w-auto flex gap-5">
+              <div className="w-full sm:w-auto flex lg:flex-row flex-col gap-5">
+                {jobsByRecruiter.length === 0 ? (
+                  <div></div>
+                ) : (
+                  <NavLink
+                    type="button"
+                    to="/createJobs"
+                    className="w-full text-center rounded-lg bg-green-600 px-6 py-3 font-medium text-white transition hover:bg-green-700 active:scale-95 sm:w-auto cursor-pointer"
+                  >
+                    Create Jobs
+                  </NavLink>
+                )}
+
                 <button
                   type="button"
                   className="w-full rounded-lg bg-blue-500 px-6 py-3 font-medium text-white transition hover:bg-blue-700 active:scale-95 sm:w-auto cursor-pointer"
@@ -59,7 +82,7 @@ const Dashboard = () => {
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="w-full rounded-lg bg-red-600 px-6 py-3 font-medium text-white transition hover:bg-red-700 active:scale-95 sm:w-auto cursor-pointer"
+                  className="w-full rounded-lg bg-red-500 px-6 py-3 font-medium text-white transition hover:bg-red-700 active:scale-95 sm:w-auto cursor-pointer"
                 >
                   Logout
                 </button>
@@ -69,87 +92,9 @@ const Dashboard = () => {
             {/* Divider */}
             <div className="border-t border-slate-200 dark:border-slate-700" />
 
-            {/* Additional information */}
-            {/* <div className="grid gap-4 p-6 sm:grid-cols-2 lg:grid-cols-3 lg:p-8">
-              <div className="rounded-2xl bg-slate-50 p-5 dark:bg-slate-900">
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                  Name
-                </p>
-                <p className="mt-1 font-medium capitalize text-slate-900 dark:text-white">
-                  {user?.name || "Not available"}
-                </p>
-              </div>
-
-              <div className="rounded-2xl bg-slate-50 p-5 dark:bg-slate-900">
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                  Email
-                </p>
-                <p className="mt-1 break-all font-medium text-slate-900 dark:text-white">
-                  {user?.email || "Not available"}
-                </p>
-              </div>
-
-              <div className="rounded-2xl bg-slate-50 p-5 dark:bg-slate-900">
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                  Role
-                </p>
-                <p className="mt-1 font-medium capitalize text-slate-900 dark:text-white">
-                  {user?.role || "Not available"}
-                </p>
-              </div>
-            </div> */}
-
-            <div className="my-5 px-6 lg:px-8">
-              {user.role === "jobseeker" ? (
-                <div className="flex flex-col items-center justify-center rounded-3xl bg-white p-8 text-center shadow-sm border border-slate-200 dark:border-slate-800 dark:bg-slate-900">
-                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-2xl dark:bg-blue-950">
-                    💼
-                  </div>
-
-                  <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
-                    Ready for your next opportunity?
-                  </h2>
-
-                  <p className="mt-2 max-w-md text-sm leading-6 text-slate-500 dark:text-slate-400">
-                    Explore available jobs, find opportunities that match your
-                    skills, and start applying to your dream role.
-                  </p>
-
-                  <NavLink
-                    to="/jobs"
-                    className="mt-6 rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition hover:bg-blue-700 active:scale-95"
-                  >
-                    Explore Jobs →
-                  </NavLink>
-                </div>
-              ) : (
-                <div className="flex flex-col items-center justify-center rounded-3xl bg-white p-8 text-center shadow-sm border border-slate-200 dark:border-slate-800 dark:bg-slate-900">
-                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-2xl dark:bg-blue-950">
-                    🚀
-                  </div>
-
-                  <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
-                    Build your next great team
-                  </h2>
-
-                  <p className="mt-2 max-w-md text-sm leading-6 text-slate-500 dark:text-slate-400">
-                    Create a job listing, reach talented candidates, and find
-                    the right person for your team.
-                  </p>
-
-                  <NavLink
-                    to="/createJobs"
-                    className="mt-6 rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition hover:bg-blue-700 active:scale-95"
-                  >
-                    Create a Job →
-                  </NavLink>
-                </div>
-              )}
-            </div>
-
-            {/* <section>
+            <section>
               {user.role === "jobseeker" ? <AppliedJobs /> : <PostedJobs />}
-            </section> */}
+            </section>
           </section>
         ) : (
           <section className="flex min-h-100 flex-col items-center justify-center rounded-3xl bg-white p-8 text-center shadow-xl dark:bg-slate-800">

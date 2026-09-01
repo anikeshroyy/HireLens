@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 const Contact = () => {
   return (
     <section
@@ -187,12 +189,12 @@ const Contact = () => {
             Looking for your next opportunity?
           </p>
 
-          <a
-            href="#"
+          <NavLink
+            to="/jobs"
             className="mt-2 inline-block text-sm font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400"
           >
             Explore available jobs →
-          </a>
+          </NavLink>
         </div>
       </div>
     </section>

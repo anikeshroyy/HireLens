@@ -6,7 +6,7 @@ const JobCard = ({ job }) => {
   });
 
   return (
-    <article className="w-full max-w-80 min-h-100 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm hover:shadow-md transition-shadow">
+    <article className="w-full max-w-80 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm hover:shadow-md transition-shadow">
       {/* Header */}
       <div className="flex items-start gap-3">
         {/* Job Title & Company */}

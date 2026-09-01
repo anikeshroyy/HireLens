@@ -4,6 +4,7 @@ import API from "../../../services/api";
 
 const initialState = {
     jobs: [],
+    jobsByRecruiter: [],
     loading: false,
     error: null,
 }
@@ -15,6 +16,17 @@ export const getAllJobs = createAsyncThunk("jobs/alljobs", async (_, thunkApi) =
     } catch (err) {
         return thunkApi.rejectWithValue(
             err.result?.data?.message || "Jobs can't fetched"
+        )
+    }
+})
+
+export const myJobs = createAsyncThunk("jobs/myJobs", async (_, thunkApi) => {
+    try {
+        const result = await API.get("/jobs/my-jobs")
+        return result.data
+    } catch (error) {
+        return thunkApi.rejectWithValue(
+            error.result?.data?.message || "Can't fetched job for recruiter"
         )
     }
 })
@@ -41,6 +53,21 @@ const jobSlice = createSlice({
             builder.addCase(getAllJobs.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+            }),
+
+            builder.addCase(myJobs.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            }),
+
+            builder.addCase(myJobs.fulfilled, (state, action) => {
+                state.loading = false;
+                state.error = null;
+                state.jobsByRecruiter = action.payload;
+            }),
+            builder.addCase(myJobs.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload
             })
     }
 })
