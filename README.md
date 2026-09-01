@@ -50,9 +50,10 @@ This creates a complete workflow from resume intake to job discovery and future 
 ## Current Features
 
 - User registration and login
+- Recruiter dashboard
+- Jobseeker dashboard
+- Job posting by recruiters
 - Job listing page
-- User dashboard
-- Resume parsing workflow
 - Responsive design
 - About and Contact pages
 - Dark and light theme support
@@ -61,11 +62,10 @@ This creates a complete workflow from resume intake to job discovery and future 
 
 The project is planned to include the following improvements:
 
-- Job posting by recruiters or admins
+- Resume parsing workflow
 - Job application by users
 - Candidate profile matching with jobs
 - Job search and filtering
-- Recruiter dashboard
 - Application tracking and status updates
 - Better resume-to-job compatibility scoring
 
@@ -74,8 +74,8 @@ The project is planned to include the following improvements:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/ResumeParser.git
-cd ResumeParser
+git clone https://github.com/anikeshroyy/HireLens.git
+cd HireLens
 ```
 
 ### 2. Install backend dependencies
