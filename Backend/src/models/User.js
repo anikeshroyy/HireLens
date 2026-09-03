@@ -3,12 +3,14 @@ const mongoose = require('mongoose');
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        maxlength: 20,
     },
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        maxlength: 30,
     },
     password: {
         type: String,
@@ -21,6 +23,15 @@ const UserSchema = new mongoose.Schema({
     avatar: {
         type: String,
         default: "https://www.svgrepo.com/show/355688/user-a-solid.svg"
+    },
+    phone: {
+        type: String,
+        maxlength: 10,
+        minlength: 10,
+    },
+    city: {
+        type: String,
+        maxlength: 50,
     },
     createdAt: {
         type: Date,
