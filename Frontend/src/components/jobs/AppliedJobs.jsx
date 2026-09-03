@@ -2,7 +2,8 @@ import { NavLink } from "react-router-dom";
 
 const AppliedJobs = () => {
   return (
-    <div className="my-10">
+  <div className="flex item-center justify-center">
+      <div className="my-10 w-full lg:max-w-5xl max-w-75">
       <div className="flex flex-col items-center justify-center rounded-3xl bg-white p-8 text-center shadow-sm border border-slate-200 dark:border-slate-800 dark:bg-slate-900">
         <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-2xl dark:bg-blue-950">
           💼
@@ -25,6 +26,7 @@ const AppliedJobs = () => {
         </NavLink>
       </div>
     </div>
+  </div>
   );
 };
 

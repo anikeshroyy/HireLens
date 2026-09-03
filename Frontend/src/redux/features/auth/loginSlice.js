@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-
 import API from '../../../services/api'
 
 const initialState = {
@@ -34,7 +33,7 @@ export const getCurrentUser = createAsyncThunk(
     async (_, thunkApi) => {
         try {
             const response = await API.get("/auth/me");
-            return response.data
+            return response.data;
         } catch (error) {
             return thunkApi.rejectWithValue(
                 error.response?.data?.message || "Can't get current user"
@@ -62,10 +61,10 @@ export const logoutUser = createAsyncThunk(
     async (_, thunkApi) => {
         try {
             const response = await API.post("/logout");
-            return response.data
+            return response.data;
         } catch (error) {
             return thunkApi.rejectWithValue(
-                error.response?.data?.message || "Can't get current user"
+                error.response?.data?.message || "Logout failed"
             )
         }
     }
@@ -73,96 +72,76 @@ export const logoutUser = createAsyncThunk(
 
 const loginSlice = createSlice({
     name: "login",
-
     initialState,
 
     reducers: {
         updateLoginFormData: (state, action) => {
-            const { name, value } = action.payload
-            state.formData[name] = value
+            const { name, value } = action.payload;
+            state.formData[name] = value;
         },
         resetFormData: (state) => {
             state.formData = {
                 email: "",
                 password: "",
-            }
+            };
         },
-        clearProfileError: (state) => {
+        resetProfileStatus: (state) => {
             state.error = null;
+            state.success = false;
         }
     },
 
     extraReducers: (builder) => {
-
-        // LogIn User Checking
         builder.addCase(loginUser.pending, (state) => {
             state.loading = true;
             state.error = null;
             state.success = false;
-        })
-
-        // LogIn User Completed
+        });
         builder.addCase(loginUser.fulfilled, (state, action) => {
             state.loading = false;
             state.success = true;
             state.isAuthenticated = true;
             state.user = action.payload.user;
-        })
-
-        // LogIn Failed
+        });
         builder.addCase(loginUser.rejected, (state, action) => {
             state.loading = false;
             state.success = false;
             state.error = action.payload;
             state.isAuthenticated = false;
             state.user = null;
-        })
+        });
 
-        // Existing session checking
-        builder.addCase(
-            getCurrentUser.pending,
-            (state) => {
-                state.authChecking = true;
-                state.error = null;
-            });
+        builder.addCase(getCurrentUser.pending, (state) => {
+            state.authChecking = true;
+            state.error = null;
+        });
+        builder.addCase(getCurrentUser.fulfilled, (state, action) => {
+            state.authChecking = false;
+            state.isAuthenticated = true;
+            state.user = action.payload.user;
+        });
+        builder.addCase(getCurrentUser.rejected, (state) => {
+            state.authChecking = false;
+            state.isAuthenticated = false;
+            state.user = null;
+        });
 
-        // Existing session found
-        builder.addCase(
-            getCurrentUser.fulfilled,
-            (state, action) => {
-                state.authChecking = false;
-
-                state.isAuthenticated = true;
-                state.user = action.payload.user;
-            });
-
-        // No valid session
-        builder.addCase(
-            getCurrentUser.rejected,
-            (state) => {
-                state.authChecking = false;
-
-                state.isAuthenticated = false;
-                state.user = null;
-            });
-
-        // Update Profile
         builder.addCase(updateUserProfile.pending, (state) => {
             state.loading = true;
             state.error = null;
+            state.success = false;
         });
-
         builder.addCase(updateUserProfile.fulfilled, (state, action) => {
             state.loading = false;
+            state.success = true;
             state.user = action.payload.user;
         });
-
         builder.addCase(updateUserProfile.rejected, (state, action) => {
             state.loading = false;
+            state.success = false;
             state.error = action.payload;
         });
 
-        // LogOut Completed
         builder.addCase(logoutUser.fulfilled, (state) => {
             state.user = null;
             state.isAuthenticated = false;
@@ -172,6 +151,6 @@ const loginSlice = createSlice({
     }
 })
 
-export const { updateLoginFormData, resetFormData, clearProfileError } = loginSlice.actions
+export const { updateLoginFormData, resetFormData, resetProfileStatus } = loginSlice.actions
 
 export default loginSlice.reducer;
