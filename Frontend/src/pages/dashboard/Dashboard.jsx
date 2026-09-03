@@ -5,7 +5,9 @@ import AppliedJobs from "../../components/jobs/AppliedJobs";
 import PostedJobs from "../../components/jobs/PostedJobs";
 
 import { myJobs } from "../../redux/features/job/jobSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+import EditProfileModal from "../../components/profile/EditProfileModal";
 
 const Dashboard = () => {
   const { user } = useSelector((state) => state.login);
@@ -20,8 +22,10 @@ const Dashboard = () => {
       dispatch(myJobs());
     }
   }, [dispatch, user?.role]);
-  
+
   const { jobsByRecruiter } = useSelector((state) => state.allJobs);
+
+  const [openModal, setOpenModal] = useState(false);
 
   return (
     <main className="min-h-[85vh] bg-slate-100 px-4 py-10 dark:bg-slate-950">
@@ -75,6 +79,7 @@ const Dashboard = () => {
 
                 <button
                   type="button"
+                  onClick={() => setOpenModal(true)}
                   className="w-full rounded-lg bg-blue-500 px-6 py-3 font-medium text-white transition hover:bg-blue-700 active:scale-95 sm:w-auto cursor-pointer"
                 >
                   Edit Profile
@@ -119,6 +124,7 @@ const Dashboard = () => {
           </section>
         )}
       </div>
+      <EditProfileModal isOpen={openModal} onClose={() => setOpenModal(false)} />
     </main>
   );
 };

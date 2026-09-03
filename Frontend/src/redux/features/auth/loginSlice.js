@@ -43,6 +43,20 @@ export const getCurrentUser = createAsyncThunk(
     }
 )
 
+export const updateUserProfile = createAsyncThunk(
+    "currentUser/updateUserProfile",
+    async (profileData, thunkApi) => {
+        try {
+            const response = await API.put("/auth/profile", profileData);
+            return response.data;
+        } catch (error) {
+            return thunkApi.rejectWithValue(
+                error.response?.data?.message || "Failed to update profile"
+            );
+        }
+    }
+);
+
 export const logoutUser = createAsyncThunk(
     "logout/logoutUser",
     async (_, thunkApi) => {
@@ -72,6 +86,9 @@ const loginSlice = createSlice({
                 email: "",
                 password: "",
             }
+        },
+        clearProfileError: (state) => {
+            state.error = null;
         }
     },
 
@@ -79,26 +96,26 @@ const loginSlice = createSlice({
 
         // LogIn User Checking
         builder.addCase(loginUser.pending, (state) => {
-            state.loading = true,
-                state.error = null,
-                state.success = false
+            state.loading = true;
+            state.error = null;
+            state.success = false;
         })
 
         // LogIn User Completed
         builder.addCase(loginUser.fulfilled, (state, action) => {
-            state.loading = false,
-                state.success = true,
-                state.isAuthenticated = true,
-                state.user = action.payload.user
+            state.loading = false;
+            state.success = true;
+            state.isAuthenticated = true;
+            state.user = action.payload.user;
         })
 
         // LogIn Failed
         builder.addCase(loginUser.rejected, (state, action) => {
-            state.loading = false,
-                state.success = false,
-                state.error = action.payload,
-                state.isAuthenticated = false,
-                state.user = null
+            state.loading = false;
+            state.success = false;
+            state.error = action.payload;
+            state.isAuthenticated = false;
+            state.user = null;
         })
 
         // Existing session checking
@@ -129,6 +146,22 @@ const loginSlice = createSlice({
                 state.user = null;
             });
 
+        // Update Profile
+        builder.addCase(updateUserProfile.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+
+        builder.addCase(updateUserProfile.fulfilled, (state, action) => {
+            state.loading = false;
+            state.user = action.payload.user;
+        });
+
+        builder.addCase(updateUserProfile.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        });
+
         // LogOut Completed
         builder.addCase(logoutUser.fulfilled, (state) => {
             state.user = null;
@@ -139,6 +172,6 @@ const loginSlice = createSlice({
     }
 })
 
-export const { updateLoginFormData, resetFormData } = loginSlice.actions
+export const { updateLoginFormData, resetFormData, clearProfileError } = loginSlice.actions
 
 export default loginSlice.reducer;

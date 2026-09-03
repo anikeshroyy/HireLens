@@ -26,12 +26,26 @@ const UserSchema = new mongoose.Schema({
     },
     phone: {
         type: String,
-        maxlength: 10,
-        minlength: 10,
     },
     city: {
         type: String,
         maxlength: 50,
+    },
+    bio: {
+        type: String,
+        maxlength: 500,
+    },
+    skills: {
+        type: String,
+    },
+    resume: {
+        type: String,
+    },
+    companyName: {
+        type: String,
+    },
+    companyWebsite: {
+        type: String,
     },
     createdAt: {
         type: Date,
