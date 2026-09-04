@@ -98,4 +98,58 @@ const getAdzunaJobs = async (req, res) => {
     }
 };
 
-module.exports = { createJob, getAllJobs, myJobs, getAdzunaJobs }
+const updateJob = async (req, res) => {
+    try {
+        const cookie = req.cookies.token;
+        if (!cookie) {
+            return res.status(401).json({ message: "Login please to update job" });
+        }
+
+        const decoded = jwt.verify(cookie, process.env.JWT_SECRETS);
+        const jobId = req.params.id;
+
+        const existingJob = await jobModel.findById(jobId);
+        if (!existingJob) {
+            return res.status(404).json({ message: "Job not found" });
+        }
+
+        if (existingJob.userId.toString() !== decoded.id) {
+            return res.status(403).json({ message: "Unauthorized to edit this job" });
+        }
+
+        const rawSkills = req.body.skills || req.body.job_skills;
+        let formattedSkills = existingJob.skills;
+        if (Array.isArray(rawSkills)) {
+            formattedSkills = rawSkills;
+        } else if (typeof rawSkills === 'string') {
+            formattedSkills = rawSkills.split(',').map(s => s.trim()).filter(Boolean);
+        }
+
+        const updateFields = {
+            job_title: req.body.job_title ?? existingJob.job_title,
+            job_publisher: req.body.job_publisher ?? existingJob.job_publisher,
+            job_description: req.body.job_description ?? existingJob.job_description,
+            job_city: req.body.job_city ?? existingJob.job_city,
+            job_country: req.body.job_country ?? existingJob.job_country,
+            job_employment_type: req.body.job_employment_type ?? existingJob.job_employment_type,
+            job_salary: req.body.job_salary ?? existingJob.job_salary,
+            employer_logo: req.body.employer_logo ?? existingJob.employer_logo,
+            skills: formattedSkills
+        };
+
+        const updatedJob = await jobModel.findByIdAndUpdate(
+            jobId,
+            { $set: updateFields },
+            { new: true, runValidators: true }
+        );
+
+        return res.status(200).json(updatedJob);
+    } catch (error) {
+        return res.status(500).json({
+            message: "Failed to update job",
+            error: error.message
+        });
+    }
+};
+
+module.exports = { createJob, getAllJobs, myJobs, getAdzunaJobs, updateJob }

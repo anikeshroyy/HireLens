@@ -1,10 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { myJobs } from "../../redux/features/job/jobSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
+import EditJobModal from "./EditJobModal";
 
 const PostedJobs = () => {
   const dispatch = useDispatch();
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
   useEffect(() => {
     dispatch(myJobs());
@@ -12,7 +15,10 @@ const PostedJobs = () => {
 
   const { jobsByRecruiter } = useSelector((state) => state.allJobs);
 
-  console.log(jobsByRecruiter);
+  const handleEditClick = (job) => {
+    setSelectedJob(job);
+    setIsEditOpen(true);
+  };
 
   if (jobsByRecruiter.length === 0) {
     return (
@@ -104,7 +110,8 @@ const PostedJobs = () => {
                 <div className="flex gap-2 md:justify-end">
                   <button
                     type="button"
-                    className="rounded-lg border border-slate-300 px-3 py-2 text-xs font-medium text-slate-700 transition hover:bg-slate-100 active:scale-95 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                    onClick={() => handleEditClick(job)}
+                    className="rounded-lg border border-slate-300 px-3 py-2 text-xs font-medium text-slate-700 transition hover:bg-slate-100 active:scale-95 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 cursor-pointer"
                   >
                     Edit
                   </button>
@@ -114,6 +121,12 @@ const PostedJobs = () => {
           </div>
         </div>
       </div>
+
+      <EditJobModal
+        isOpen={isEditOpen}
+        onClose={() => setIsEditOpen(false)}
+        jobToEdit={selectedJob}
+      />
     </div>
   );
 };

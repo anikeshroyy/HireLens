@@ -47,11 +47,30 @@ export const getAdzunaJobs = createAsyncThunk(
     }
 );
 
+export const updateJob = createAsyncThunk(
+    "jobs/updateJob",
+    async ({ jobId, jobData }, thunkApi) => {
+        try {
+            const response = await API.put(`/jobs/edit/${jobId}`, jobData);
+            return response.data;
+        } catch (error) {
+            return thunkApi.rejectWithValue(
+                error.response?.data?.message || "Failed to update job"
+            );
+        }
+    }
+);
+
 const jobSlice = createSlice({
     name: "jobs",
     initialState,
 
-    reducers: {},
+    reducers: {
+        resetJobUpdateStatus: (state) => {
+            state.updateSuccess = false;
+            state.error = null;
+        }
+    },
 
     extraReducers: (builder) => {
         builder.addCase(getAllJobs.pending, (state) => {
@@ -100,7 +119,33 @@ const jobSlice = createSlice({
             state.adzunaLoading = false;
             state.error = action.payload;
         });
+
+        builder.addCase(updateJob.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+            state.updateSuccess = false;
+        });
+
+        builder.addCase(updateJob.fulfilled, (state, action) => {
+            state.loading = false;
+            state.updateSuccess = true;
+            const updated = action.payload;
+            state.jobsByRecruiter = state.jobsByRecruiter.map((job) =>
+                job._id === updated._id ? updated : job
+            );
+            state.jobs = state.jobs.map((job) =>
+                job._id === updated._id ? updated : job
+            );
+        });
+
+        builder.addCase(updateJob.rejected, (state, action) => {
+            state.loading = false;
+            state.updateSuccess = false;
+            state.error = action.payload;
+        });
     }
 })
+
+export const { resetJobUpdateStatus } = jobSlice.actions;
 
 export default jobSlice.reducer
