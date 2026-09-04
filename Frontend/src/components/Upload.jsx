@@ -20,9 +20,9 @@ const Upload = () => {
   );
 
   return (
-    <div className="w-full min-h-screen bg-slate-950 relative overflow-hidden">
-      <div className="flex justify-center pt-50">
-        <div className="w-full max-w-3xl">
+    <div className="w-full bg-slate-50 dark:bg-slate-950 relative overflow-hidden">
+      <div className="flex justify-center items-center min-h-[50vh] lg:min-h-[70vh] pt-20 lg:pt-0">
+        <div className="w-full max-w-80 lg:max-w-3xl">
           <div
             onDragOver={(e) => {
               e.preventDefault();
@@ -39,8 +39,8 @@ const Upload = () => {
             aria-label="Upload your resume"
             className={`relative rounded-2xl border border-dashed transition-colors cursor-pointer overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 ${
               isDragging
-                ? "border-blue-400 bg-blue-950"
-                : "border-slate-700 bg-slate-900 hover:border-slate-600"
+                ? "border-blue-400 bg-blue-50 dark:bg-blue-950"
+                : "border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-slate-400 dark:hover:border-slate-600"
             }`}
           >
             <input
@@ -55,10 +55,10 @@ const Upload = () => {
               {file ? (
                 <>
                   <FileText
-                    className="w-8 h-8 text-teal-300"
+                    className="w-8 h-8 text-blue-600 dark:text-blue-300"
                     strokeWidth={1.5}
                   />
-                  <div className="flex items-center gap-2 text-slate-200 text-sm font-mono">
+                  <div className="flex items-center gap-2 text-slate-700 dark:text-slate-200 text-sm font-mono">
                     {file.name}
                     <button
                       type="button"
@@ -66,7 +66,7 @@ const Upload = () => {
                         e.stopPropagation();
                         setFile(null);
                       }}
-                      className="text-slate-500 cursor-pointer hover:text-slate-300"
+                      className="text-slate-400 dark:text-slate-500 cursor-pointer hover:text-slate-600 dark:hover:text-slate-300"
                       aria-label="Remove file"
                     >
                       <X className="w-4 h-4" />
@@ -76,16 +76,16 @@ const Upload = () => {
               ) : (
                 <>
                   <UploadCloud
-                    className="w-8 h-8 text-slate-500"
+                    className="w-8 h-8 text-slate-400 dark:text-slate-500"
                     strokeWidth={1.5}
                   />
-                  <p className="text-slate-300 text-sm">
+                  <p className="text-slate-600 dark:text-slate-300 text-sm">
                     Drop your resume here, or{" "}
-                    <span className="text-teal-300 underline underline-offset-4">
+                    <span className="text-blue-600 dark:text-blue-600 underline underline-offset-4">
                       browse
                     </span>
                   </p>
-                  <p className="text-slate-600 text-xs font-mono">
+                  <p className="text-slate-400 dark:text-slate-600 text-xs font-mono">
                     PDF or DOCX, up to 5MB
                   </p>
                 </>
@@ -98,11 +98,11 @@ const Upload = () => {
             disabled={!file}
             className={`group w-full mt-4 flex items-center justify-center gap-2 text-base font-medium px-6 py-3.5 rounded-xl transition-all ${
               file
-                ? "bg-blue-600 text-slate-200 cursor-pointer"
-                : "bg-slate-800 text-slate-500 cursor-not-allowed"
+                ? "bg-blue-600 text-white cursor-pointer"
+                : "bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed"
             }`}
           >
-            Analyze Resume
+            Extract Resume
             <ArrowRight
               className={`w-4 h-4 transition-transform ${
                 file ? "group-hover:translate-x-0.5" : ""
