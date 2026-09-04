@@ -36,9 +36,9 @@ const Contact = () => {
               share some feedback, we're here to listen.
             </p>
 
-            <div className="mt-8 space-y-6">
+            <div className="mt-8 space-y-6 lg:space-y-5">
               {/* Email */}
-              <div className="flex gap-4">
+              <div className="flex items-center gap-4 bg-slate-200 dark:bg-slate-800 lg:px-4 px-2 lg:py-8 py-2 rounded-2xl">
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-lg dark:bg-blue-950 dark:text-slate-200">
                   ✉
                 </div>
@@ -49,16 +49,16 @@ const Contact = () => {
                   </p>
 
                   <a
-                    href="mailto:hello@hirelens.com"
+                    href="mailto:royy.anikesh@gmail.com"
                     className="mt-1 block text-sm font-medium text-slate-900 hover:text-blue-600 dark:text-slate-200 dark:hover:text-blue-400"
                   >
-                    hello@hirelens.com
+                    royy.anikesh@gmail.com
                   </a>
                 </div>
               </div>
 
               {/* Response time */}
-              <div className="flex gap-4">
+              <div className="flex items-center gap-4 bg-slate-200 dark:bg-slate-800 lg:px-4 px-2 lg:py-8 py-2 rounded-2xl">
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-lg dark:bg-blue-950 dark:text-slate-200">
                   ◷
                 </div>
@@ -75,7 +75,7 @@ const Contact = () => {
               </div>
 
               {/* Feedback */}
-              <div className="flex gap-4">
+              <div className="flex items-center gap-4 bg-slate-200 dark:bg-slate-800 lg:px-4 px-2 lg:py-8 py-2 rounded-2xl">
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-lg dark:bg-blue-950 dark:text-slate-200">
                   ✦
                 </div>

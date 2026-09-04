@@ -1,10 +1,10 @@
-import Navbar from "./components/Navbar";
+import Navbar from "./components/common/Navbar";
 import Home from "./pages/Home";
 import { Routes, Route } from "react-router-dom";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Jobs from "./pages/Jobs";
-import Footer from "./components/Footer";
+import Footer from "./components/common/Footer";
 import Error404 from "./pages/Error404";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";

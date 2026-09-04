@@ -1,4 +1,4 @@
-import logo from "../assets/HireLens_Logo.png";
+import logo from "../../assets/HireLens_Logo.png";
 import {
   GithubIcon,
   FacebookIcon,

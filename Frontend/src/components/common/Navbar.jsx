@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { MoonIcon, SunIcon, MenuIcon, XIcon } from "@animateicons/react/lucide";
 
-import logo from "../assets/HireLens_Logo.png";
+import logo from "../../assets/HireLens_Logo.png";
 
-import { useTheme } from "../hooks/useTheme";
+import { useTheme } from "../../hooks/useTheme";
 
 const NAV_ITEMS = [
   { label: "Home", path: "/" },
+  { label: "Oportunity", path: "/jobs" },
   { label: "About", path: "/about" },
   { label: "Contact", path: "/contact" },
 ];
@@ -44,7 +45,7 @@ const Navbar = () => {
                   className={({ isActive }) =>
                     `text-lg transition-colors ${
                       isActive
-                        ? "text-blue-700 dark:text-blue-500 font-bold"
+                        ? "text-blue-700 dark:text-blue-500"
                         : "text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-slate-100"
                     }`
                   }
