@@ -13,7 +13,7 @@ const Jobs = () => {
   }, [dispatch]);
 
   const { jobs, adzunaJobs, loading, adzunaLoading } = useSelector(
-    (state) => state.allJobs
+    (state) => state.allJobs,
   );
 
   const combinedJobs = [...jobs, ...adzunaJobs];
@@ -21,32 +21,31 @@ const Jobs = () => {
     activeTab === "adzuna"
       ? adzunaJobs
       : activeTab === "recruiter"
-      ? jobs
-      : combinedJobs;
+        ? jobs
+        : combinedJobs;
 
   return (
     <div className="min-h-screen bg-slate-100 dark:bg-slate-950 px-4 py-8">
       <div className="mx-auto max-w-7xl">
-        
         {/* Header Section */}
         <div className="mb-8 text-center sm:text-left">
           <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
             Find Your Next Opportunity
           </h1>
           <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            Browse verified job postings from recruiters and live external listings from Adzuna.
+            Browse verified job postings from recruiters and live external
+            listings from Adzuna.
           </p>
         </div>
 
         {/* Main Grid: Sidebar Filters + Jobs List */}
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
-          
           {/* Left Sidebar - Filters Placeholder */}
           <aside className="lg:col-span-1">
             <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sticky top-26">
               <div className="flex items-center justify-between border-b border-slate-200 pb-3 dark:border-slate-800">
                 <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                 Filter Jobs
+                  Filter Jobs
                 </h2>
               </div>
 
@@ -81,15 +80,25 @@ const Jobs = () => {
                 </label>
                 <div className="space-y-2 text-sm text-slate-700 dark:text-slate-300">
                   <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" className="rounded text-indigo-600 focus:ring-indigo-500" defaultChecked />
+                    <input
+                      type="checkbox"
+                      className="rounded text-indigo-600 focus:ring-indigo-500"
+                      defaultChecked
+                    />
                     Full-Time
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" className="rounded text-indigo-600 focus:ring-indigo-500" />
+                    <input
+                      type="checkbox"
+                      className="rounded text-indigo-600 focus:ring-indigo-500"
+                    />
                     Part-Time
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" className="rounded text-indigo-600 focus:ring-indigo-500" />
+                    <input
+                      type="checkbox"
+                      className="rounded text-indigo-600 focus:ring-indigo-500"
+                    />
                     Contract / Remote
                   </label>
                 </div>
@@ -107,7 +116,7 @@ const Jobs = () => {
                     className={`w-full rounded-lg px-3 py-2 text-left text-xs font-medium transition cursor-pointer ${
                       activeTab === "all"
                         ? "bg-indigo-600 text-white"
-                        : "bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300"
+                        : "bg-slate-100 text-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 dark:bg-slate-800 dark:text-slate-300"
                     }`}
                   >
                     All Jobs ({combinedJobs.length})
@@ -118,7 +127,7 @@ const Jobs = () => {
                     className={`w-full rounded-lg px-3 py-2 text-left text-xs font-medium transition cursor-pointer ${
                       activeTab === "adzuna"
                         ? "bg-indigo-600 text-white"
-                        : "bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300"
+                        : "bg-slate-100 text-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 dark:bg-slate-800 dark:text-slate-300"
                     }`}
                   >
                     Adzuna External ({adzunaJobs.length})
@@ -129,10 +138,10 @@ const Jobs = () => {
                     className={`w-full rounded-lg px-3 py-2 text-left text-xs font-medium transition cursor-pointer ${
                       activeTab === "recruiter"
                         ? "bg-indigo-600 text-white"
-                        : "bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300"
+                        : "bg-slate-100 text-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 dark:bg-slate-800 dark:text-slate-300"
                     }`}
                   >
-                    Platform Jobs ({jobs.length})
+                    HireLens Jobs ({jobs.length})
                   </button>
                 </div>
               </div>
@@ -141,11 +150,14 @@ const Jobs = () => {
 
           {/* Right Area - Job Cards Grid */}
           <main className="lg:col-span-3">
-            
             {/* Tab Selection Banner */}
             <div className="mb-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-white p-4 shadow-sm dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
               <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                Showing <strong className="text-indigo-600 dark:text-indigo-400">{displayedJobs.length}</strong> jobs
+                Showing{" "}
+                <strong className="text-indigo-600 dark:text-indigo-400">
+                  {displayedJobs.length}
+                </strong>{" "}
+                jobs
               </span>
 
               <div className="flex gap-2">
@@ -155,7 +167,7 @@ const Jobs = () => {
                   className={`rounded-xl px-4 py-1.5 text-xs font-medium transition cursor-pointer ${
                     activeTab === "all"
                       ? "bg-indigo-600 text-white"
-                      : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300"
+                      : "bg-slate-100 text-slate-600 hover:bg-slate-300 dark:hover:bg-slate-600 dark:bg-slate-800 dark:text-slate-300"
                   }`}
                 >
                   All ({combinedJobs.length})
@@ -166,7 +178,7 @@ const Jobs = () => {
                   className={`rounded-xl px-4 py-1.5 text-xs font-medium transition cursor-pointer ${
                     activeTab === "adzuna"
                       ? "bg-indigo-600 text-white"
-                      : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300"
+                      : "bg-slate-100 text-slate-600 hover:bg-slate-300 dark:hover:bg-slate-600 dark:bg-slate-800 dark:text-slate-300"
                   }`}
                 >
                   Adzuna ({adzunaJobs.length})
@@ -177,10 +189,10 @@ const Jobs = () => {
                   className={`rounded-xl px-4 py-1.5 text-xs font-medium transition cursor-pointer ${
                     activeTab === "recruiter"
                       ? "bg-indigo-600 text-white"
-                      : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300"
+                      : "bg-slate-100 text-slate-600 hover:bg-slate-300 dark:hover:bg-slate-600 dark:bg-slate-800 dark:text-slate-300"
                   }`}
                 >
-                  Platform ({jobs.length})
+                  HireLens ({jobs.length})
                 </button>
               </div>
             </div>
@@ -196,8 +208,9 @@ const Jobs = () => {
             )}
 
             {/* Job Grid */}
-            {!loading && !adzunaLoading && (
-              displayedJobs.length > 0 ? (
+            {!loading &&
+              !adzunaLoading &&
+              (displayedJobs.length > 0 ? (
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {displayedJobs.map((job) => (
                     <JobCard key={job.id || job._id} job={job} />
@@ -210,11 +223,11 @@ const Jobs = () => {
                     No Jobs Found
                   </h3>
                   <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                    No jobs match the selected filter tab. Try switching to "All Jobs".
+                    No jobs match the selected filter tab. Try switching to "All
+                    Jobs".
                   </p>
                 </div>
-              )
-            )}
+              ))}
           </main>
         </div>
       </div>

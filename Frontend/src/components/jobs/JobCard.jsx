@@ -15,7 +15,7 @@ const JobCard = ({ job }) => {
       : [];
 
   return (
-    <article className="w-full max-w-72 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+    <article className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
       <div>
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
