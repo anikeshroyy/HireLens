@@ -53,7 +53,9 @@ This creates a complete workflow from resume intake to job discovery and future 
 - Recruiter dashboard
 - Jobseeker dashboard
 - Job posting by recruiters
+- Job editing by recruiters
 - Job listing page
+- Working resume parsing workflow
 - Responsive design
 - About and Contact pages
 - Dark and light theme support
@@ -62,7 +64,6 @@ This creates a complete workflow from resume intake to job discovery and future 
 
 The project is planned to include the following improvements:
 
-- Resume parsing workflow
 - Job application by users
 - Candidate profile matching with jobs
 - Job search and filtering
@@ -130,10 +131,10 @@ Then run the resume parser service as needed for extraction and processing.
 
 1. Open the frontend in your browser.
 2. Create a new account or log in.
-3. Upload a resume for parsing.
+3. Upload a resume and review the parsed information.
 4. Explore the available jobs.
-5. View your dashboard and profile details.
-6. Use the upcoming job posting and application features when they are added.
+5. Recruiters can create and edit job postings from the dashboard.
+6. View your dashboard and profile details.
 
 ## Contact & Social Links
 
