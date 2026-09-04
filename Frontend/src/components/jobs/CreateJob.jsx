@@ -5,7 +5,7 @@ import {
   createJobs,
 } from "../../redux/features/job/createJobSlice";
 
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const CreateJob = () => {
   const inputStyle =
@@ -272,9 +272,17 @@ const CreateJob = () => {
 
               {/* Submit */}
               <div className="border-t border-slate-200 pt-6 dark:border-slate-800">
-                <button className="w-full rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 active:scale-[0.99] sm:w-auto">
-                  Create Job
-                </button>
+                <div className="flex gap-5 justify-between">
+                  <NavLink
+                    to="/dashboard"
+                    className="w-full rounded-lg bg-slate-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-700 active:scale-[0.99] sm:w-auto"
+                  >
+                    Cancel
+                  </NavLink>
+                  <button className="w-full cursor-pointer rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 active:scale-[0.99] sm:w-auto">
+                    Create Job
+                  </button>
+                </div>
               </div>
             </div>
           </form>

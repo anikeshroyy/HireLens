@@ -9,6 +9,8 @@ import { useEffect, useState } from "react";
 
 import EditProfileModal from "../../components/profile/EditProfileModal";
 
+import Button from "../../components/common/Button";
+
 const Dashboard = () => {
   const { user } = useSelector((state) => state.login);
   const dispatch = useDispatch();
@@ -64,33 +66,30 @@ const Dashboard = () => {
               </div>
 
               {/* Action */}
-              <div className="w-full sm:w-auto flex lg:flex-row flex-col gap-5">
-                {jobsByRecruiter.length === 0 ? (
-                  <div></div>
-                ) : (
-                  <NavLink
-                    type="button"
-                    to="/createJobs"
-                    className="w-full text-center rounded-lg bg-green-600 px-6 py-3 font-medium text-white transition hover:bg-green-700 active:scale-95 sm:w-auto cursor-pointer"
-                  >
-                    Create Jobs
+              <div className="w-full sm:w-auto flex lg:flex-row flex-col gap-3">
+                {jobsByRecruiter.length > 0 && (
+                  <NavLink to="/createJobs" className="w-full sm:w-auto">
+                    <Button variant="success" className="w-full sm:w-auto">
+                      Create Jobs
+                    </Button>
                   </NavLink>
                 )}
 
-                <button
-                  type="button"
+                <Button
+                  variant="primary"
                   onClick={() => setOpenModal(true)}
-                  className="w-full rounded-lg bg-blue-500 px-6 py-3 font-medium text-white transition hover:bg-blue-700 active:scale-95 sm:w-auto cursor-pointer"
+                  className="w-full sm:w-auto"
                 >
                   Edit Profile
-                </button>
-                <button
-                  type="button"
+                </Button>
+
+                <Button
+                  variant="danger"
                   onClick={handleLogout}
-                  className="w-full rounded-lg bg-red-500 px-6 py-3 font-medium text-white transition hover:bg-red-700 active:scale-95 sm:w-auto cursor-pointer"
+                  className="w-full sm:w-auto"
                 >
                   Logout
-                </button>
+                </Button>
               </div>
             </div>
 

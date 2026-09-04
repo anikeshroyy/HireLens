@@ -71,7 +71,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
       onClick={handleBackdropClick}
       className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs transition-opacity duration-200"
     >
-      <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl dark:bg-slate-900 sm:p-8 border border-slate-200 dark:border-slate-800">
+      <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl dark:bg-slate-900 sm:p-8 border border-slate-200 dark:border-slate-800 scrollbar-none">
         <div className="flex items-center justify-between border-b border-slate-200 pb-4 dark:border-slate-800">
           <div>
             <h2 className="text-2xl font-bold text-slate-900 dark:text-white">

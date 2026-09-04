@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateJob, resetJobUpdateStatus } from "../../redux/features/job/jobSlice";
+import {
+  updateJob,
+  resetJobUpdateStatus,
+} from "../../redux/features/job/jobSlice";
 
 const EditJobModal = ({ isOpen, onClose, jobToEdit }) => {
   const dispatch = useDispatch();
-  const { loading, error, updateSuccess } = useSelector((state) => state.allJobs);
+  const { loading, error, updateSuccess } = useSelector(
+    (state) => state.allJobs,
+  );
 
   const [formData, setFormData] = useState({
     job_title: "",
@@ -81,8 +86,7 @@ const EditJobModal = ({ isOpen, onClose, jobToEdit }) => {
       onClick={handleBackdropClick}
       className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs transition-opacity duration-200"
     >
-      <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl dark:bg-slate-900 sm:p-8 border border-slate-200 dark:border-slate-800">
-        
+      <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl dark:bg-slate-900 sm:p-8 border border-slate-200 dark:border-slate-800 scrollbar-none">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-200 pb-4 dark:border-slate-800">
           <div>
@@ -231,7 +235,9 @@ const EditJobModal = ({ isOpen, onClose, jobToEdit }) => {
 
           {/* Skills */}
           <div>
-            <label className={labelStyle}>Required Skills (comma separated)</label>
+            <label className={labelStyle}>
+              Required Skills (comma separated)
+            </label>
             <input
               type="text"
               name="skills"
