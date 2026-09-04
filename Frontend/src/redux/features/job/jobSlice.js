@@ -5,7 +5,9 @@ import API from "../../../services/api";
 const initialState = {
     jobs: [],
     jobsByRecruiter: [],
+    adzunaJobs: [],
     loading: false,
+    adzunaLoading: false,
     error: null,
 }
 
@@ -31,44 +33,73 @@ export const myJobs = createAsyncThunk("jobs/myJobs", async (_, thunkApi) => {
     }
 })
 
+export const getAdzunaJobs = createAsyncThunk(
+    "jobs/getAdzunaJobs",
+    async (params = {}, thunkApi) => {
+        try {
+            const response = await API.get("/jobs/adzuna", { params });
+            return response.data;
+        } catch (error) {
+            return thunkApi.rejectWithValue(
+                error.response?.data?.message || "Failed to fetch Adzuna jobs"
+            );
+        }
+    }
+);
+
 const jobSlice = createSlice({
     name: "jobs",
     initialState,
 
-    reducers: {
-    },
+    reducers: {},
 
     extraReducers: (builder) => {
         builder.addCase(getAllJobs.pending, (state) => {
             state.loading = true;
             state.error = null;
-        }),
+        });
 
-            builder.addCase(getAllJobs.fulfilled, (state, action) => {
-                state.loading = false;
-                state.error = null;
-                state.jobs = action.payload;
-            }),
+        builder.addCase(getAllJobs.fulfilled, (state, action) => {
+            state.loading = false;
+            state.error = null;
+            state.jobs = action.payload;
+        });
 
-            builder.addCase(getAllJobs.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload;
-            }),
+        builder.addCase(getAllJobs.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        });
 
-            builder.addCase(myJobs.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            }),
+        builder.addCase(myJobs.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
 
-            builder.addCase(myJobs.fulfilled, (state, action) => {
-                state.loading = false;
-                state.error = null;
-                state.jobsByRecruiter = action.payload;
-            }),
-            builder.addCase(myJobs.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload
-            })
+        builder.addCase(myJobs.fulfilled, (state, action) => {
+            state.loading = false;
+            state.error = null;
+            state.jobsByRecruiter = action.payload;
+        });
+
+        builder.addCase(myJobs.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        });
+
+        builder.addCase(getAdzunaJobs.pending, (state) => {
+            state.adzunaLoading = true;
+            state.error = null;
+        });
+
+        builder.addCase(getAdzunaJobs.fulfilled, (state, action) => {
+            state.adzunaLoading = false;
+            state.adzunaJobs = action.payload;
+        });
+
+        builder.addCase(getAdzunaJobs.rejected, (state, action) => {
+            state.adzunaLoading = false;
+            state.error = action.payload;
+        });
     }
 })
 

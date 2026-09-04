@@ -37,7 +37,7 @@ const jobSchema = new mongoose.Schema({
     job_salary: {
         type: String,
     },
-    skills: [],
+    skills: [{ type: String }],
     createdAt: {
         type: Date,
         default: Date.now

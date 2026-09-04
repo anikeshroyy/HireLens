@@ -6,5 +6,6 @@ const jobController = require('../controllers/jobController');
 router.post('/create/job', jobController.createJob);
 router.get('/jobs', jobController.getAllJobs)
 router.get('/jobs/my-jobs', jobController.myJobs)
+router.get('/jobs/adzuna', jobController.getAdzunaJobs)
 
 module.exports = router;
