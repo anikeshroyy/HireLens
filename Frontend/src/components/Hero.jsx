@@ -7,7 +7,7 @@ const Hero = () => {
       <div className="absolute top-1/4 left-10 h-72 w-72 rounded-full bg-blue-500/10 blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 right-10 h-96 w-96 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none" />
 
-      <div className="mx-auto w-full max-w-7xl -mt-20">
+      <div className="mx-auto w-full max-w-7xl">
         <div className="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-10 lg:gap-12 items-center justify-items-center">
           <div className="flex flex-col items-center text-center lg:items-start lg:text-left space-y-6 w-full max-w-2xl lg:max-w-none mx-auto lg:mx-0">
             <h1 className="text-4xl sm:text-5xl lg:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
@@ -78,7 +78,7 @@ const Hero = () => {
               <img
                 src={heroImg}
                 alt="HireLens Career & AI Job Search Dashboard"
-                className="w-full h-auto rounded-2xl object-cover aspect-4/3"
+                className="w-full h-auto rounded-2xl object-cover aspect-4/2 lg:aspect-4/3"
               />
             </div>
           </div>
