@@ -1,5 +1,10 @@
 const mongoose = require('mongoose')
 
+const applicantSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    appliedAt: { type: Date, default: Date.now }
+}, { _id: false })
+
 const jobSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -38,6 +43,7 @@ const jobSchema = new mongoose.Schema({
         type: String,
     },
     skills: [{ type: String }],
+    applicants: [applicantSchema],
     createdAt: {
         type: Date,
         default: Date.now
@@ -45,3 +51,4 @@ const jobSchema = new mongoose.Schema({
 })
 
 module.exports = mongoose.model("job", jobSchema)
+

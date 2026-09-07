@@ -50,7 +50,22 @@ const UserSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    savedJobs: [
+        {
+            jobId: {
+                type: String,
+                required: true,
+            },
+            jobData: {
+                type: mongoose.Schema.Types.Mixed,
+            },
+            savedAt: {
+                type: Date,
+                default: Date.now,
+            },
+        },
+    ],
 });
 
 module.exports = mongoose.model('User', UserSchema);
