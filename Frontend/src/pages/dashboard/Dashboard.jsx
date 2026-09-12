@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import EditProfileModal from "../../components/profile/EditProfileModal";
 
 import Button from "../../components/common/Button";
+import SEO from "../../components/common/SEO";
 
 const Dashboard = () => {
   const { user } = useSelector((state) => state.login);
@@ -31,6 +32,12 @@ const Dashboard = () => {
 
   return (
     <main className="min-h-[85vh] bg-slate-100 px-4 py-10 dark:bg-slate-950">
+      <SEO
+        title="Dashboard"
+        description="HireLens user and recruiter dashboard."
+        path="/dashboard"
+        noindex={true}
+      />
       <div className="mx-auto w-full max-w-6xl">
         {user ? (
           <section className="overflow-hidden rounded-3xl bg-white shadow-xl dark:bg-slate-800">

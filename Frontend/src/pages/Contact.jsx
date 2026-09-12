@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import SEO from "../components/common/SEO";
 
 const Contact = () => {
   return (
@@ -6,6 +7,11 @@ const Contact = () => {
       id="contact"
       className="min-h-screen bg-white dark:bg-slate-950 px-6 py-20"
     >
+      <SEO
+        title="Contact Us"
+        description="Get in touch with the HireLens team. Send inquiries, feedback, or support requests regarding our AI resume parsing platform."
+        path="/contact"
+      />
       <div className="mx-auto max-w-6xl">
         {/* Header */}
         <div className="mx-auto max-w-2xl text-center">

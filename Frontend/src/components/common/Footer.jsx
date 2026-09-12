@@ -39,19 +39,19 @@ const Footer = () => {
                 <ul className="text-gray-400">
                   <li className="mb-4">
                     <a
-                      href="#"
+                      href="/jobs"
                       className="dark:hover:text-white hover:text-slate-900 hover:underline transition text-slate-700 dark:text-slate-400"
                     >
-                      Blog
+                      Browse Jobs
                     </a>
                   </li>
 
                   <li>
                     <a
-                      href="#"
+                      href="/about"
                       className="dark:hover:text-white hover:text-slate-900 hover:underline transition text-slate-700 dark:text-slate-400"
                     >
-                      Resume Guide
+                      About Us
                     </a>
                   </li>
                 </ul>
@@ -66,7 +66,9 @@ const Footer = () => {
                 <ul className="text-gray-400">
                   <li className="mb-4">
                     <a
-                      href="#"
+                      href="https://linkedin.com/in/anikeshroy"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="dark:hover:text-white hover:text-slate-900 hover:underline transition text-slate-700 dark:text-slate-400"
                     >
                       LinkedIn
@@ -75,10 +77,12 @@ const Footer = () => {
 
                   <li>
                     <a
-                      href="#"
+                      href="https://github.com/anikeshroyy"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="dark:hover:text-white hover:text-slate-900 hover:underline transition text-slate-700 dark:text-slate-400"
                     >
-                      Twitter / X
+                      GitHub
                     </a>
                   </li>
                 </ul>
@@ -113,28 +117,67 @@ const Footer = () => {
           {/* Bottom */}
           <div className="sm:flex sm:items-center sm:justify-between">
             <span className="text-sm text-slate-700 dark:text-slate-400 sm:text-center">
-              © 2025{" "}
+              © {new Date().getFullYear()}{" "}
               <a href="/" className="hover:text-blue-500 hover:underline">
                 HireLens™
+              </a>
+              . Built by{" "}
+              <a
+                href="https://anikeshroy.in"
+                target="_blank"
+                rel="noopener noreferrer author"
+                className="font-medium text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                Anikesh Roy
               </a>
               . All Rights Reserved.
             </span>
 
             {/* Social Icons */}
             <div className="mt-4 flex space-x-6 sm:mt-0 sm:justify-center text-slate-900 dark:text-slate-400">
-              <a href="">
+              <a
+                href="https://github.com/anikeshroyy"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub Profile"
+                className="hover:text-blue-600 dark:hover:text-blue-400 transition"
+              >
                 <GithubIcon size={20} duration={1} />
               </a>
-              <a href="">
+              <a
+                href="https://linkedin.com/in/anikeshroy"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn Profile"
+                className="hover:text-blue-600 dark:hover:text-blue-400 transition"
+              >
                 <LinkedinIcon size={20} duration={1} />
               </a>
-              <a href="">
+              <a
+                href="https://instagram.com/anikesh.royy"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram Profile"
+                className="hover:text-pink-600 dark:hover:text-pink-400 transition"
+              >
                 <InstagramIcon size={20} duration={1} />
               </a>
-              <a href="">
+              <a
+                href="https://facebook.com/anikesh.royy"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook Profile"
+                className="hover:text-blue-600 dark:hover:text-blue-400 transition"
+              >
                 <FacebookIcon size={20} duration={1} />
               </a>
-              <a href="">
+              <a
+                href="https://x.com/anikesh_royy"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="X / Twitter"
+                className="hover:text-blue-600 dark:hover:text-blue-400 transition"
+              >
                 <TwitterIcon size={20} duration={1} />
               </a>
             </div>

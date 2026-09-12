@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import JobCard from "../components/jobs/JobCard";
 import JobDetailModal from "../components/jobs/JobDetailModal";
 import { getAllJobs, getAdzunaJobs, getAppliedJobs, getSavedJobs, toggleSaveJob } from "../redux/features/job/jobSlice";
+import SEO from "../components/common/SEO";
+
 
 const tabBtn = (isActive) =>
     `rounded-xl px-4 py-1.5 text-xs font-medium transition cursor-pointer ${
@@ -155,6 +157,11 @@ const Jobs = () => {
 
     return (
         <div className="min-h-screen bg-slate-100 dark:bg-slate-950 px-4 py-8">
+            <SEO
+                title="Explore Tech Jobs & Opportunities"
+                description="Discover verified job postings and opportunities tailored to your skills and experience on HireLens."
+                path="/jobs"
+            />
             <div className="mx-auto max-w-7xl">
                 <div className="mb-8 text-center sm:text-left">
                     <h1 className="text-3xl font-bold text-slate-900 dark:text-white">

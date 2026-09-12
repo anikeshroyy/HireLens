@@ -1,9 +1,16 @@
+import SEO from "../components/common/SEO";
+
 const About = () => {
   return (
     <section
       id="about"
       className="min-h-screen bg-white dark:bg-slate-950 px-6 py-20"
     >
+      <SEO
+        title="About HireLens"
+        description="Learn about HireLens and how we are using AI resume parsing and smart matching to simplify hiring for candidates and recruiters."
+        path="/about"
+      />
       <div className="mx-auto max-w-6xl">
         {/* Hero */}
         <div className="mx-auto max-w-3xl text-center">

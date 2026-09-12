@@ -1,8 +1,15 @@
 import { NavLink } from "react-router-dom";
+import SEO from "../components/common/SEO";
 
 const Error404 = () => {
   return (
     <div className="min-h-[80vh] flex items-center justify-center">
+      <SEO
+        title="Page Not Found"
+        description="The page you are looking for does not exist on HireLens."
+        path="/404"
+        noindex={true}
+      />
       <div className="text-center">
         <div className="flex flex-col gap-5 p-5">
           <h1 className="text-6xl">👻</h1>

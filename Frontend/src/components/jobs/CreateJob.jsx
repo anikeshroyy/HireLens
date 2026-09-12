@@ -6,6 +6,7 @@ import {
 } from "../../redux/features/job/createJobSlice";
 
 import { NavLink, useNavigate } from "react-router-dom";
+import SEO from "../common/SEO";
 
 const CreateJob = () => {
   const inputStyle =
@@ -40,6 +41,12 @@ const CreateJob = () => {
 
   return (
     <div className="min-h-screen px-4 py-8">
+      <SEO
+        title="Create Job Posting"
+        description="Post a new job opening on HireLens."
+        path="/createJobs"
+        noindex={true}
+      />
       <div className="mx-auto w-full max-w-4xl">
         {/* Header */}
         <div className="mb-6 text-center">

@@ -6,6 +6,8 @@ import {
   updateLoginFormData,
   resetFormData,
 } from "../../redux/features/auth/loginSlice";
+import SEO from "../../components/common/SEO";
+
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -33,6 +35,11 @@ const Login = () => {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center">
+      <SEO
+        title="Sign In"
+        description="Log in to your HireLens account to manage your profile, parsed resumes, and job listings."
+        path="/login"
+      />
       <div className="flex flex-col justify-center items-center">
         <div>
           <h1 className="text-slate-900 dark:text-slate-200 text-center text-2xl lg:text-3xl font-medium my-5">

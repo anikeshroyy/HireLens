@@ -1,4 +1,4 @@
-﻿# HireLens
+# HireLens
 
 HireLens is a smart hiring platform designed to help job seekers discover roles that match their skills, experience, and career goals. The project brings together a modern React frontend, an Express backend, MongoDB, and a Python-based resume parsing workflow to make recruitment and job discovery more efficient.
 
@@ -138,11 +138,14 @@ Then run the resume parser service as needed for extraction and processing.
 
 ## Contact & Social Links
 
+- Portfolio: [anikeshroy.in](https://anikeshroy.in)
+- Live Demo: [gethire.vercel.app](https://gethire.vercel.app)
 - Email: anikeshworkmail@gmail.com
 - LinkedIn: [anikeshroy](https://linkedin.com/in/anikeshroy)
 - GitHub: [anikeshroyy](https://github.com/anikeshroyy)
 - Instagram: [anikesh.royy](https://instagram.com/anikesh.royy)
 - Facebook: [anikesh.royy](https://facebook.com/anikesh.royy)
+- Twitter: [anikesh_royy](https://x.com/anikesh_royy)
 - Reddit: [anikeshx_dev](https://www.reddit.com/user/anikeshx_dev/)
 - Medium: [DevX_AnikeshRoy](https://medium.com/@DevX_AnikeshRoy)
 - Discord: [anikesh_royy](https://discordapp.com/users/780881044340867113)

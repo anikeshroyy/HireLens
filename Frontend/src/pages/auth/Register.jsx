@@ -6,6 +6,8 @@ import {
   updateformData,
   resetForm,
 } from "../../redux/features/auth/registerSlice";
+import SEO from "../../components/common/SEO";
+
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -40,6 +42,11 @@ const Register = () => {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center">
+      <SEO
+        title="Create an Account"
+        description="Join HireLens as a job seeker or recruiter. Unlock AI resume parsing and smart candidate matching."
+        path="/register"
+      />
       <div className="flex flex-col justify-center items-center">
         <div>
           <h1 className="text-slate-900 dark:text-slate-200 text-center text-2xl lg:text-3xl font-medium my-5">

@@ -1,0 +1,17 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+Allow: /about
+Allow: /jobs
+Allow: /contact
+Allow: /login
+Allow: /register
+
+# Disallow private user/recruiter portal and action pages
+Disallow: /dashboard
+Disallow: /createJobs
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://gethire.vercel.app/sitemap.xml
+Host: https://gethire.vercel.app
