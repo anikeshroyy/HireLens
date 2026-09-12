@@ -6,7 +6,7 @@ const DEFAULT_IMAGE = `${BASE_URL}/hirelens_og_image.png`;
 
 const SEO = ({
   title,
-  description = "HireLens is an intelligent hiring platform powered by AI resume parsing and smart job discovery. Match skills to the right opportunities effortlessly.",
+  description = "HireLens is an AI resume parser and smart job matching platform. Parse resumes in seconds, extract structured skills, and discover matching jobs effortlessly.",
   path = "",
   image = DEFAULT_IMAGE,
   type = "website",
@@ -14,7 +14,7 @@ const SEO = ({
 }) => {
   const fullTitle = title
     ? `${title} | ${SITE_NAME}`
-    : `${SITE_NAME} — AI Resume Parser & Smart Job Discovery Platform`;
+    : `${SITE_NAME} — AI Resume Parser & Job Discovery`;
 
   const canonicalUrl = `${BASE_URL}${
     path ? (path.startsWith("/") ? path : `/${path}`) : "/"
